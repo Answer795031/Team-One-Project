@@ -32,6 +32,9 @@ public class TelegramBotListener implements UpdatesListener {
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
+    /**
+     * Инициализация бота
+     */
     @PostConstruct
     private void init() {
         telegramBot.setUpdatesListener(this);
