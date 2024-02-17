@@ -18,6 +18,11 @@ public class TelegramBotListener implements UpdatesListener {
     @Autowired
     private TelegramBot telegramBot;
 
+    /**
+     * Обработчик полученных обновлений (сообщения, callback)
+     * @param updates полученные обновления (сообщения, callback)
+     * @return статус обработанного обновления
+     */
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
