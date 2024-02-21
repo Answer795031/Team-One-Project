@@ -10,7 +10,10 @@ public class ShelterDefaultCommand extends Command {
     public ShelterDefaultCommand(TelegramBot telegramBot, ClientRepository clientRepository) {
         super(telegramBot, clientRepository);
     }
-
+    final String InfoAboutOfShelter = "Узнать информацию о приюте";
+    final String HowYouCanTakePet = "Как взять животное?";
+    final String SendReportAboutOfPet = "Прислать отчет о питомце";
+    final String CallVolunteer  = "Позвать волонтера";
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
@@ -26,10 +29,10 @@ public class ShelterDefaultCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {"Узнать информацию о приюте"}, //TODO: Вынести в константы
-                {"Как взять животное?"}, //TODO: Вынести в константы
-                {"Прислать отчет о питомце"}, //TODO: Вынести в константы
-                {"Позвать волонтера"} //TODO: Вынести в константы
+                {InfoAboutOfShelter}, //TODO: Вынести в константы
+                {HowYouCanTakePet}, //TODO: Вынести в константы
+                {SendReportAboutOfPet}, //TODO: Вынести в константы
+                {CallVolunteer  } //TODO: Вынести в константы
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);
