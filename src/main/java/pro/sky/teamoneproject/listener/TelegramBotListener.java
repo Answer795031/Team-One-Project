@@ -68,37 +68,38 @@ public class TelegramBotListener implements UpdatesListener {
 
         if (commands.containsKey(receiveMessage)) {
             commands.get(receiveMessage).action(update);
-        } else {
-            // TODO: Вынести в отдельные классы
-            switch (receiveMessage) {
-                case "Узнать информацию о приюте":
-                case "Как взять животное?":
-                case "Прислать отчет о питомце":
-                    telegramBot.execute(new SendMessage(chatId, update.message().text()));
-                    break;
-                case "Позвать волонтера":
-                    SendMessage message = new SendMessage(chatId, "Позвать волонтера можно следующими способами");
-                    InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
-
-                    InlineKeyboardButton fromPhone = new InlineKeyboardButton("По номеру телефона"); //TODO: Назвать нормально переменную
-                    fromPhone.callbackData("phone-helper"); //TODO: Назвать нормально, вынести в константы
-
-                    InlineKeyboardButton fromNikName = new InlineKeyboardButton("По никнейму телеграм"); //TODO: Назвать нормально переменную
-                    fromNikName.callbackData("nikname-helper"); //TODO: Назвать нормально, вынести в константы
-
-                    InlineKeyboardButton fromBot = new InlineKeyboardButton("Через бота"); //TODO: Назвать нормально переменную
-                    fromBot.callbackData("from-bot-helper"); //TODO: Назвать нормально, вынести в константы
-
-                    keyboardMarkup.addRow(fromPhone);
-                    keyboardMarkup.addRow(fromNikName);
-                    keyboardMarkup.addRow(fromBot);
-
-                    message.replyMarkup(keyboardMarkup);
-
-                    telegramBot.execute(message);
-                    break;
-            }
         }
+//        else {
+//            // TODO: Вынести в отдельные классы
+//            switch (receiveMessage) {
+//                case "Узнать информацию о приюте":
+//                case "Как взять животное?":
+//                case "Прислать отчет о питомце":
+//                    telegramBot.execute(new SendMessage(chatId, update.message().text()));
+//                    break;
+//                case "Позвать волонтера":
+//                    SendMessage message = new SendMessage(chatId, "Позвать волонтера можно следующими способами");
+//                    InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
+//
+//                    InlineKeyboardButton fromPhone = new InlineKeyboardButton("По номеру телефона"); //TODO: Назвать нормально переменную
+//                    fromPhone.callbackData("phone-helper"); //TODO: Назвать нормально, вынести в константы
+//
+//                    InlineKeyboardButton fromNikName = new InlineKeyboardButton("По никнейму телеграм"); //TODO: Назвать нормально переменную
+//                    fromNikName.callbackData("nikname-helper"); //TODO: Назвать нормально, вынести в константы
+//
+//                    InlineKeyboardButton fromBot = new InlineKeyboardButton("Через бота"); //TODO: Назвать нормально переменную
+//                    fromBot.callbackData("from-bot-helper"); //TODO: Назвать нормально, вынести в константы
+//
+//                    keyboardMarkup.addRow(fromPhone);
+//                    keyboardMarkup.addRow(fromNikName);
+//                    keyboardMarkup.addRow(fromBot);
+//
+//                    message.replyMarkup(keyboardMarkup);
+//
+//                    telegramBot.execute(message);
+//                    break;
+//            }
+//        }
     }
 
     /**
@@ -146,5 +147,8 @@ public class TelegramBotListener implements UpdatesListener {
 
         commands.put("/start", new StartCommand(telegramBot, clientRepository, shelterRepository));
         commands.putAll(getShelters());
-    }
+        commands.put("Узнать информацию о приюте", new InfoAboutOfShelterCommand(telegramBot, clientRepository));
+            commands.put("Расписание работы приюта", new ShelterWorksScheduleCommand(telegramBot, clientRepository));
+                commands.put("Вернуться к меню приюта", new InfoAboutOfShelterCommand(telegramBot, clientRepository));
+ }
 }
