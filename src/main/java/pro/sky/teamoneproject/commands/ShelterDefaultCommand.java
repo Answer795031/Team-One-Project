@@ -6,14 +6,13 @@ import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import pro.sky.teamoneproject.repository.ClientRepository;
 
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
+
 public class ShelterDefaultCommand extends Command {
     public ShelterDefaultCommand(TelegramBot telegramBot, ClientRepository clientRepository) {
         super(telegramBot, clientRepository);
     }
-    final String InfoAboutOfShelter = "Узнать информацию о приюте";
-    final String HowYouCanTakePet = "Как взять животное?";
-    final String SendReportAboutOfPet = "Прислать отчет о питомце";
-    final String CallVolunteer  = "Позвать волонтера";
+
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();

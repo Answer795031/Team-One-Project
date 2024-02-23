@@ -7,14 +7,12 @@ import com.pengrad.telegrambot.request.SendMessage;
 import pro.sky.teamoneproject.commands.Command;
 import pro.sky.teamoneproject.repository.ClientRepository;
 
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
+
 public class InfoAboutOfShelterCommand extends Command {
     public InfoAboutOfShelterCommand(TelegramBot telegramBot, ClientRepository clientRepository) {
         super(telegramBot, clientRepository);
     }
-    public final String ShelterWorksSchedule = "Расписание работы приюта";
-    public final String AdressOfShelter = "Адрес приюта";
-    public final String LocationMap = "Схема проезда";
-    public final String Propusk  = "Выдать пропуск";//TODO ПРИДУМАЙ НОРМ НАЗВАНИЕ
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
