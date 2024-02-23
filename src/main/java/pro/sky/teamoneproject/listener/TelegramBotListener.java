@@ -75,27 +75,6 @@ public class TelegramBotListener implements UpdatesListener {
                 case "Прислать отчет о питомце":
                     telegramBot.execute(new SendMessage(chatId, update.message().text()));
                     break;
-                case "Позвать волонтера":
-                    SendMessage message = new SendMessage(chatId, "Позвать волонтера можно следующими способами");
-                    InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
-
-                    InlineKeyboardButton fromPhone = new InlineKeyboardButton("По номеру телефона"); //TODO: Назвать нормально переменную
-                    fromPhone.callbackData("phone-helper"); //TODO: Назвать нормально, вынести в константы
-
-                    InlineKeyboardButton fromNikName = new InlineKeyboardButton("По никнейму телеграм"); //TODO: Назвать нормально переменную
-                    fromNikName.callbackData("nikname-helper"); //TODO: Назвать нормально, вынести в константы
-
-                    InlineKeyboardButton fromBot = new InlineKeyboardButton("Через бота"); //TODO: Назвать нормально переменную
-                    fromBot.callbackData("from-bot-helper"); //TODO: Назвать нормально, вынести в константы
-
-                    keyboardMarkup.addRow(fromPhone);
-                    keyboardMarkup.addRow(fromNikName);
-                    keyboardMarkup.addRow(fromBot);
-
-                    message.replyMarkup(keyboardMarkup);
-
-                    telegramBot.execute(message);
-                    break;
             }
         }
     }
