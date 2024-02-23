@@ -31,7 +31,8 @@ public class InfoAboutOfShelterCommand extends Command {
                 { ShelterWorksSchedule },
                 { AdressOfShelter },
                 { LocationMap },
-                { Propusk }
+                { Propusk },
+                { CallVolunteer }
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

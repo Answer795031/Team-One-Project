@@ -4,8 +4,6 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.AnswerCallbackQuery;
 import com.pengrad.telegrambot.request.SendContact;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -14,9 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pro.sky.teamoneproject.commands.Command;
-import pro.sky.teamoneproject.commands.ShelterDefaultCommand;
-import pro.sky.teamoneproject.commands.StartCommand;
+import pro.sky.teamoneproject.commands.*;
 import pro.sky.teamoneproject.commands.bottomsforshelters.*;
 import pro.sky.teamoneproject.entity.Shelter;
 import pro.sky.teamoneproject.repository.ClientRepository;
@@ -155,5 +151,6 @@ public class TelegramBotListener implements UpdatesListener {
             commands.put(LocationMap, new LocationMapCommand(telegramBot, clientRepository));
             commands.put(Propusk, new PropuskCommand(telegramBot, clientRepository));
                 commands.put(back, new InfoAboutOfShelterCommand(telegramBot, clientRepository));
+             commands.put(CallVolunteer, new CallVolunteerCommand(telegramBot, clientRepository));
  }
 }
