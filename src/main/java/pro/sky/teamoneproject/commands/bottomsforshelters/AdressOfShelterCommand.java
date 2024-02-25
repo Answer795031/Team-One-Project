@@ -1,27 +1,24 @@
-package pro.sky.teamoneproject.commands;
+package pro.sky.teamoneproject.commands.bottomsforshelters;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import pro.sky.teamoneproject.commands.Command;
+import pro.sky.teamoneproject.repository.ClientRepository;
 
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.Propusk;
 
-public class ShelterDefaultCommand extends Command {
-    @Autowired
-    protected TelegramBot telegramBot;
-
-    public ShelterDefaultCommand() {
-        super(null);
+public class AdressOfShelterCommand extends Command {
+    public AdressOfShelterCommand(TelegramBot telegramBot, ClientRepository clientRepository) {
+        super(telegramBot, clientRepository);
     }
-
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
         String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для приюта \"" + messageText + "\", доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы " + messageText.toLowerCase() + ", доступны следующие команды");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -32,10 +29,8 @@ public class ShelterDefaultCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {InfoAboutOfShelter}, //TODO: Вынести в константы
-                {HowYouCanTakePet}, //TODO: Вынести в константы
-                {SendReportAboutOfPet}, //TODO: Вынести в константы
-                {CallVolunteer  } //TODO: Вынести в константы
+                { back }
+
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

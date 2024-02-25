@@ -25,6 +25,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
+
 @Service
 public class TelegramBotListener implements UpdatesListener {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -69,10 +71,10 @@ public class TelegramBotListener implements UpdatesListener {
 
         if (commands.containsKey(receiveMessage)) {
             commands.get(receiveMessage).action(update);
-        } else {
+        }
+        else {
             // TODO: Вынести в отдельные классы
             switch (receiveMessage) {
-                case "Узнать информацию о приюте":
                 case "Как взять животное?":
                 case "Прислать отчет о питомце":
                     telegramBot.execute(new SendMessage(chatId, update.message().text()));
@@ -186,5 +188,16 @@ public class TelegramBotListener implements UpdatesListener {
         registrationCommandsAndCallbacks();
 
         telegramBot.setUpdatesListener(this);
+
+
+        commands.put("/start", new StartCommand(telegramBot, clientRepository, shelterRepository));
+        commands.putAll(getShelters());
+        commands.put(InfoAboutOfShelter, new InfoAboutOfShelterCommand(telegramBot, clientRepository));
+            commands.put(ShelterWorksSchedule, new ShelterWorksScheduleCommand(telegramBot, clientRepository));
+            commands.put(AdressOfShelter, new AdressOfShelterCommand(telegramBot, clientRepository));
+            commands.put(LocationMap, new LocationMapCommand(telegramBot, clientRepository));
+            commands.put(Propusk, new PropuskCommand(telegramBot, clientRepository));
+                commands.put(back, new InfoAboutOfShelterCommand(telegramBot, clientRepository));
+             commands.put(CallVolunteer, new CallVolunteerCommand(telegramBot, clientRepository));
     }
 }
