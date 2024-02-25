@@ -4,15 +4,21 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.commands.Command;
-import pro.sky.teamoneproject.repository.ClientRepository;
 
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
+@Component
 public class InfoAboutOfShelterCommand extends Command {
-    public InfoAboutOfShelterCommand(TelegramBot telegramBot, ClientRepository clientRepository) {
-        super(telegramBot, clientRepository);
+    @Autowired
+    private TelegramBot telegramBot;
+
+    public InfoAboutOfShelterCommand() {
+        super(InfoAboutOfShelter);
     }
+
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
@@ -29,12 +35,23 @@ public class InfoAboutOfShelterCommand extends Command {
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
                 { ShelterWorksSchedule },
-                { AdressOfShelter },
+                {AddressOfShelter},
                 { LocationMap },
-                { Propusk },
-                { CallVolunteer }
+                {ACCESS_TO_SHELTER},
+                { CallVolunteer },
+                {back}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

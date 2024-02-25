@@ -4,20 +4,43 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import pro.sky.teamoneproject.entity.Shelter;
+import pro.sky.teamoneproject.entity.ShelterClient;
 import pro.sky.teamoneproject.repository.ClientRepository;
+import pro.sky.teamoneproject.repository.ShelterRepository;
+
+import java.time.LocalDateTime;
 
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
+@Component
 public class ShelterDefaultCommand extends Command {
-    public ShelterDefaultCommand(TelegramBot telegramBot, ClientRepository clientRepository) {
-        super(telegramBot, clientRepository);
+    @Autowired
+    private TelegramBot telegramBot;
+    @Autowired
+    private ClientRepository clientRepository;
+    @Autowired
+    private ShelterRepository shelterRepository;
+
+    public ShelterDefaultCommand() {
+        super(null);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
         String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для " + messageText + ", доступны следующие команды");
+
+        Shelter shelter = shelterRepository.findByName(messageText).orElseThrow();
+
+        ShelterClient client = clientRepository.findByChatId(chatId).orElseThrow();
+        client.setSelectedShelter(shelter);
+        client.setLastTimeAppeal(LocalDateTime.now());
+        clientRepository.save(client);
+
+        SendMessage sendMessage = new SendMessage(chatId, shelter.getDescription() + "\nДля приюта \"" + messageText + "\", доступны следующие команды");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -31,9 +54,19 @@ public class ShelterDefaultCommand extends Command {
                 {InfoAboutOfShelter}, //TODO: Вынести в константы
                 {HowYouCanTakePet}, //TODO: Вынести в константы
                 {SendReportAboutOfPet}, //TODO: Вынести в константы
-                {CallVolunteer  } //TODO: Вынести в константы
+                {CallVolunteer}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

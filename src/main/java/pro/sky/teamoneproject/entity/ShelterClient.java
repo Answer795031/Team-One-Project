@@ -13,7 +13,7 @@ public class ShelterClient {
     private Long id;
     private String username;
     private Long chatId;
-    @OneToOne
+    @ManyToOne
     private Shelter selectedShelter;
     private LocalDateTime lastTimeAppeal;
 

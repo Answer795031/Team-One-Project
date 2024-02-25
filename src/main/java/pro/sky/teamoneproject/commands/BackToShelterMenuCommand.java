@@ -1,23 +1,28 @@
-package pro.sky.teamoneproject.commands.bottomsforshelters;
+package pro.sky.teamoneproject.commands;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
-import pro.sky.teamoneproject.commands.Command;
-import pro.sky.teamoneproject.repository.ClientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.back;
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
-public class PropuskCommand extends Command {
-    public PropuskCommand(TelegramBot telegramBot, ClientRepository clientRepository) {
-        super(telegramBot, clientRepository);
+@Component
+public class BackToShelterMenuCommand extends Command {
+    @Autowired
+    private TelegramBot telegramBot;
+
+    public BackToShelterMenuCommand() {
+        super(back);
     }
+
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
         String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы" + messageText.toLowerCase() + ", доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "Для приюта \"" + messageText + "\", доступны следующие команды");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -28,8 +33,10 @@ public class PropuskCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                { back }
-
+                {InfoAboutOfShelter}, //TODO: Вынести в константы
+                {HowYouCanTakePet}, //TODO: Вынести в константы
+                {SendReportAboutOfPet}, //TODO: Вынести в константы
+                {CallVolunteer}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

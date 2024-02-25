@@ -4,6 +4,8 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.entity.Shelter;
 import pro.sky.teamoneproject.entity.ShelterClient;
 import pro.sky.teamoneproject.repository.ClientRepository;
@@ -11,12 +13,17 @@ import pro.sky.teamoneproject.repository.ShelterRepository;
 
 import java.util.List;
 
+@Component
 public class StartCommand extends Command {
-    private final ShelterRepository shelterRepository;
+    @Autowired
+    protected TelegramBot telegramBot;
+    @Autowired
+    protected ClientRepository clientRepository;
+    @Autowired
+    private ShelterRepository shelterRepository;
 
-    public StartCommand(TelegramBot telegramBot, ClientRepository clientRepository, ShelterRepository shelterRepository) {
-        super(telegramBot, clientRepository);
-        this.shelterRepository = shelterRepository;
+    public StartCommand() {
+        super("/start");
     }
 
     @Override
@@ -49,5 +56,15 @@ public class StartCommand extends Command {
         }
 
         return new ReplyKeyboardMarkup(shelterButtons, true, false, false);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }
