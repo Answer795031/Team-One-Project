@@ -17,9 +17,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import pro.sky.teamoneproject.commands.Command;
 import pro.sky.teamoneproject.commands.ShelterDefaultCommand;
+import pro.sky.teamoneproject.controller.ShelterController;
 import pro.sky.teamoneproject.entity.Shelter;
+import pro.sky.teamoneproject.exception.AlreadyRegisteredException;
 import pro.sky.teamoneproject.model.telegrambot.request.InlineKeyboardButtonBuilder;
 import pro.sky.teamoneproject.repository.ShelterRepository;
+import pro.sky.teamoneproject.service.ShelterServiceImpl;
 
 import java.util.*;
 
@@ -104,7 +107,7 @@ public class TelegramBotListener implements UpdatesListener {
      */
     private void registrationCommand(Command command) {
         if (commands.containsKey(command.getCommand())) {
-            return;
+            throw new AlreadyRegisteredException(String.format("Команда \"%s\" уже зарегистрирована!", command.getCommand()));
         }
 
         commands.put(command.getCommand(), command);
@@ -116,7 +119,7 @@ public class TelegramBotListener implements UpdatesListener {
      */
     private void registrationInlineButton(InlineKeyboardButtonBuilder inlineKeyboardButtonBuilder) {
         if (inlineButtons.containsKey(inlineKeyboardButtonBuilder.getCallbackData())) {
-            return;
+            throw new AlreadyRegisteredException(String.format("Кнопка \"%s\" уже зарегистрирована!", inlineKeyboardButtonBuilder.getCallbackData()));
         }
 
         inlineButtons.put(inlineKeyboardButtonBuilder.getCallbackData(), inlineKeyboardButtonBuilder);
@@ -144,6 +147,16 @@ public class TelegramBotListener implements UpdatesListener {
      * Обновление списка приютов.
      */
     public void updateSheltersCommand() {
+        commands.values().removeIf(command -> {
+            boolean isRemove = command instanceof ShelterDefaultCommand;
+
+            if (isRemove) {
+                applicationContext.removeBeanDefinition(command.getCommand());
+            }
+
+            return isRemove;
+        });
+
         registrationShelterBeans();
         registrationCommandsAndCallbacks();
     }
@@ -155,7 +168,9 @@ public class TelegramBotListener implements UpdatesListener {
         // Проходим по всем зарегистрированным бинам
         for (String beanName : applicationContext.getBeanDefinitionNames()) {
             // Исключаем текущий класс, т.к. происходит зацикливание FIXME: Исправить зацикливание
-            if (beanName.equalsIgnoreCase(this.getClass().getSimpleName())) {
+            if (beanName.equalsIgnoreCase(this.getClass().getSimpleName())
+                    || beanName.equalsIgnoreCase(ShelterServiceImpl.class.getSimpleName())
+                    || beanName.equalsIgnoreCase(ShelterController.class.getSimpleName())) {
                 continue;
             }
 
@@ -174,13 +189,17 @@ public class TelegramBotListener implements UpdatesListener {
                     continue;
                 }
 
-                registrationCommand(command);
-                logger.info(String.format("Бин \"%s\"(%s) зарегистрирован как команда \"%s\"", bean.getClass().getName(), beanName, command.getCommand()));
+                if (!commands.containsKey(command.getCommand())) {
+                    registrationCommand(command);
+                    logger.info(String.format("Бин \"%s\"(%s) зарегистрирован как команда \"%s\"", bean.getClass().getName(), beanName, command.getCommand()));
+                }
             } else if (bean instanceof InlineKeyboardButtonBuilder) { // Регистрируем кнопки
                 InlineKeyboardButtonBuilder inlineKeyboardButtonBuilder = (InlineKeyboardButtonBuilder)bean;
 
-                registrationInlineButton((InlineKeyboardButtonBuilder)bean);
-                logger.info(String.format("Бин \"%s\"(%s) зарегистрирован как кнопка с келлбеком \"%s\"", bean.getClass().getName(), beanName, inlineKeyboardButtonBuilder.getCallbackData()));
+                if (inlineButtons.containsKey(inlineKeyboardButtonBuilder.getCallbackData())) {
+                    registrationInlineButton(inlineKeyboardButtonBuilder);
+                    logger.info(String.format("Бин \"%s\"(%s) зарегистрирован как кнопка с келлбеком \"%s\"", bean.getClass().getName(), beanName, inlineKeyboardButtonBuilder.getCallbackData()));
+                }
             } else { // Выводим незарегистрированные бины
                 logger.warn(String.format("Бин \"%s\"(%s) не зарегистрирован", bean.getClass().getName(), beanName));
             }
