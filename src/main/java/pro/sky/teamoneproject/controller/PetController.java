@@ -14,7 +14,7 @@ public class PetController {
         this.petService = petService;
     }
 
-    @RequestMapping(value = "post/{name}/{gender}/{age}/{species}", method = RequestMethod.GET)
+    @PostMapping(value = "post/{name}/{gender}/{age}/{species}")
     public Pet addPet(@PathVariable String name,
                       @PathVariable String gender,
                       @PathVariable int age,
@@ -27,7 +27,7 @@ public class PetController {
         return petService.getPet(id);
     }
 
-    @RequestMapping(value = "{id}/update/{name}/{gender}/{age}/{species}")
+    @PutMapping(value = "{id}/update/{name}/{gender}/{age}/{species}")
     public Pet updatePet(@PathVariable Long id,
                          @PathVariable String name,
                          @PathVariable String gender,
@@ -36,7 +36,7 @@ public class PetController {
         return petService.updatePet(id, name, gender, age, species);
     }
 
-    @RequestMapping(value = "{id}/remove", method = RequestMethod.GET)
+    @DeleteMapping(value = "{id}/remove")
     public Pet removePet(@PathVariable Long id) {
         return petService.removePet(id);
     }
