@@ -1,11 +1,9 @@
 package pro.sky.teamoneproject.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +16,9 @@ public class ShelterClient {
     @OneToOne
     private Shelter selectedShelter;
     private LocalDateTime lastTimeAppeal;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    public List<Pet> pets;
 
     public ShelterClient() {}
 

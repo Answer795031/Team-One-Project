@@ -1,8 +1,6 @@
 package pro.sky.teamoneproject.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -17,14 +15,17 @@ public class Pet {
     private int age;
     private String species;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ShelterClient shelterClient;
+
+    public Pet() {}
+
     public Pet(String name, String gender, int age, String species) {
         this.name = name;
         this.gender = gender;
         this.age = age;
         this.species = species;
     }
-
-    public Pet() {}
 
     public Long getId() {
         return id;
