@@ -83,14 +83,14 @@ public class TelegramBotListener implements UpdatesListener {
                     InlineKeyboardButton fromPhone = new InlineKeyboardButton("По номеру телефона"); //TODO: Назвать нормально переменную
                     fromPhone.callbackData("phone-helper"); //TODO: Назвать нормально, вынести в константы
 
-                    InlineKeyboardButton fromNikName = new InlineKeyboardButton("По никнейму телеграм"); //TODO: Назвать нормально переменную
-                    fromNikName.callbackData("nikname-helper"); //TODO: Назвать нормально, вынести в константы
+                    InlineKeyboardButton fromNickName = new InlineKeyboardButton("По никнейму телеграм"); //TODO: Назвать нормально переменную
+                    fromNickName.callbackData("nickname-helper"); //TODO: Назвать нормально, вынести в константы
 
                     InlineKeyboardButton fromBot = new InlineKeyboardButton("Через бота"); //TODO: Назвать нормально переменную
                     fromBot.callbackData("from-bot-helper"); //TODO: Назвать нормально, вынести в константы
 
                     keyboardMarkup.addRow(fromPhone);
-                    keyboardMarkup.addRow(fromNikName);
+                    keyboardMarkup.addRow(fromNickName);
                     keyboardMarkup.addRow(fromBot);
 
                     message.replyMarkup(keyboardMarkup);
