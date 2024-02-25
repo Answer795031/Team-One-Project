@@ -9,7 +9,7 @@ import java.util.Objects;
 @Entity
 public class ShelterClient {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private Long chatId;
