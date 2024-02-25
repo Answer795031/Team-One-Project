@@ -8,23 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.commands.Command;
 
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.LocationMap;
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.back;
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class LocationMapCommand extends Command {
+public class AddressOfShelterCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public LocationMapCommand() {
-        super(LocationMap);
+    public AddressOfShelterCommand() {
+        super(AddressOfShelter);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
         String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы" + messageText.toLowerCase() + ", доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы " + messageText.toLowerCase() + ", доступны следующие команды");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }

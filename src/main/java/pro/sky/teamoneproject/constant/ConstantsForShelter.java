@@ -13,9 +13,9 @@ public class ConstantsForShelter {
      * Кнопки для приюта "Узнать информацию о приюте"
      */
     public static final String ShelterWorksSchedule = "Расписание работы приюта";
-    public static final String AdressOfShelter = "Адрес приюта";
+    public static final String AddressOfShelter = "Адрес приюта";
     public static final String LocationMap = "Схема проезда";
-    public static final String Propusk  = "Выдать пропуск";//TODO ПРИДУМАЙ НОРМ НАЗВАНИЕ
+    public static final String ACCESS_TO_SHELTER = "Выдать пропуск";//TODO ПРИДУМАЙ НОРМ НАЗВАНИЕ
     /**
      * константа кнопки возврата
      */

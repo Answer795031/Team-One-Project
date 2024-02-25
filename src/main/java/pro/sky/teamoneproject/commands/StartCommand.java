@@ -57,4 +57,14 @@ public class StartCommand extends Command {
 
         return new ReplyKeyboardMarkup(shelterButtons, true, false, false);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

@@ -24,4 +24,14 @@ public class HelpFromBotInlineButtonBuilder extends InlineKeyboardButtonBuilder 
 
         telegramBot.execute(new SendMessage(chatId, "Функционал еще не реализован")); //TODO: Реализовать
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

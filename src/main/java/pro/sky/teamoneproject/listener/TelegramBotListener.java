@@ -4,13 +4,14 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.AnswerCallbackQuery;
 import com.pengrad.telegrambot.request.SendMessage;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -20,18 +21,16 @@ import pro.sky.teamoneproject.entity.Shelter;
 import pro.sky.teamoneproject.model.telegrambot.request.InlineKeyboardButtonBuilder;
 import pro.sky.teamoneproject.repository.ShelterRepository;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Service
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class TelegramBotListener implements UpdatesListener {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final Map<String, Command> commands = new HashMap<>();
-    private final Map<String, InlineKeyboardButtonBuilder> inlineButtons = new LinkedHashMap<>();
+    private final Map<String, InlineKeyboardButtonBuilder> inlineButtons = new HashMap<>();
 
     @Autowired
     private TelegramBot telegramBot;
@@ -79,18 +78,6 @@ public class TelegramBotListener implements UpdatesListener {
                 case "Прислать отчет о питомце":
                     telegramBot.execute(new SendMessage(chatId, update.message().text()));
                     break;
-                case "Позвать волонтера":
-                    SendMessage message = new SendMessage(chatId, "Позвать волонтера можно следующими способами");
-                    InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
-
-                    for (InlineKeyboardButtonBuilder button : inlineButtons.values()) {
-                        keyboardMarkup.addRow(button.buildInlineKeyboardButton());
-                    }
-
-                    message.replyMarkup(keyboardMarkup);
-
-                    telegramBot.execute(message);
-                    break;
             }
         }
     }
@@ -116,6 +103,10 @@ public class TelegramBotListener implements UpdatesListener {
      * @param command - команда
      */
     private void registrationCommand(Command command) {
+        if (commands.containsKey(command.getCommand())) {
+            return;
+        }
+
         commands.put(command.getCommand(), command);
     }
 
@@ -124,6 +115,10 @@ public class TelegramBotListener implements UpdatesListener {
      * @param inlineKeyboardButtonBuilder - кнопка
      */
     private void registrationInlineButton(InlineKeyboardButtonBuilder inlineKeyboardButtonBuilder) {
+        if (inlineButtons.containsKey(inlineKeyboardButtonBuilder.getCallbackData())) {
+            return;
+        }
+
         inlineButtons.put(inlineKeyboardButtonBuilder.getCallbackData(), inlineKeyboardButtonBuilder);
     }
 
@@ -131,12 +126,26 @@ public class TelegramBotListener implements UpdatesListener {
      * Выгрузка приютов с БД и регистрация их как бины
      */
     private void registrationShelterBeans() {
-        applicationContext.removeBeanDefinition("shelterDefaultCommand");
+        if (applicationContext.containsBeanDefinition("shelterDefaultCommand")) {
+            applicationContext.removeBeanDefinition("shelterDefaultCommand");
+        }
 
         for (Shelter shelter : shelterRepository.getAll()) {
+            if (commands.containsKey(shelter.getName())) {
+                continue;
+            }
+
             applicationContext.registerBean(shelter.getName(), ShelterDefaultCommand.class);
             ((Command)applicationContext.getBean(shelter.getName())).setCommand(shelter.getName());
         }
+    }
+
+    /**
+     * Обновление списка приютов.
+     */
+    public void updateSheltersCommand() {
+        registrationShelterBeans();
+        registrationCommandsAndCallbacks();
     }
 
     /**
@@ -145,7 +154,7 @@ public class TelegramBotListener implements UpdatesListener {
     private void registrationCommandsAndCallbacks() {
         // Проходим по всем зарегистрированным бинам
         for (String beanName : applicationContext.getBeanDefinitionNames()) {
-            // Исключаем текущий класс, т.к. происходит зацикливание
+            // Исключаем текущий класс, т.к. происходит зацикливание FIXME: Исправить зацикливание
             if (beanName.equalsIgnoreCase(this.getClass().getSimpleName())) {
                 continue;
             }
@@ -187,17 +196,8 @@ public class TelegramBotListener implements UpdatesListener {
 
         registrationCommandsAndCallbacks();
 
+        commands.put(back, commands.get(InfoAboutOfShelter)); //TODO: Продумать как переписать
+
         telegramBot.setUpdatesListener(this);
-
-
-        commands.put("/start", new StartCommand(telegramBot, clientRepository, shelterRepository));
-        commands.putAll(getShelters());
-        commands.put(InfoAboutOfShelter, new InfoAboutOfShelterCommand(telegramBot, clientRepository));
-            commands.put(ShelterWorksSchedule, new ShelterWorksScheduleCommand(telegramBot, clientRepository));
-            commands.put(AdressOfShelter, new AdressOfShelterCommand(telegramBot, clientRepository));
-            commands.put(LocationMap, new LocationMapCommand(telegramBot, clientRepository));
-            commands.put(Propusk, new PropuskCommand(telegramBot, clientRepository));
-                commands.put(back, new InfoAboutOfShelterCommand(telegramBot, clientRepository));
-             commands.put(CallVolunteer, new CallVolunteerCommand(telegramBot, clientRepository));
     }
 }

@@ -24,4 +24,14 @@ public class HelpByPhoneInlineButtonBuilder extends InlineKeyboardButtonBuilder 
         SendContact sendContact = new SendContact(chatId, "7-800-555-35-35", "Проще позвонить чем просто написать");
         telegramBot.execute(sendContact);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

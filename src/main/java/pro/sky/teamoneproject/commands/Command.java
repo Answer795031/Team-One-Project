@@ -2,6 +2,8 @@ package pro.sky.teamoneproject.commands;
 
 import com.pengrad.telegrambot.model.Update;
 
+import java.util.Objects;
+
 public abstract class Command {
     private String command;
 
@@ -15,6 +17,19 @@ public abstract class Command {
 
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Command command1)) return false;
+
+        return Objects.equals(command, command1.command);
+    }
+
+    @Override
+    public int hashCode() {
+        return command != null ? command.hashCode() : 0;
     }
 
     /**
