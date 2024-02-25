@@ -4,8 +4,6 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.AnswerCallbackQuery;
 import com.pengrad.telegrambot.request.SendContact;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -14,9 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pro.sky.teamoneproject.commands.Command;
-import pro.sky.teamoneproject.commands.ShelterDefaultCommand;
-import pro.sky.teamoneproject.commands.StartCommand;
+import pro.sky.teamoneproject.commands.*;
+import pro.sky.teamoneproject.commands.bottomsforshelters.*;
 import pro.sky.teamoneproject.entity.Shelter;
 import pro.sky.teamoneproject.repository.ClientRepository;
 import pro.sky.teamoneproject.repository.ShelterRepository;
@@ -24,6 +21,8 @@ import pro.sky.teamoneproject.repository.ShelterRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Service
 public class TelegramBotListener implements UpdatesListener {
@@ -68,34 +67,13 @@ public class TelegramBotListener implements UpdatesListener {
 
         if (commands.containsKey(receiveMessage)) {
             commands.get(receiveMessage).action(update);
-        } else {
+        }
+        else {
             // TODO: Вынести в отдельные классы
             switch (receiveMessage) {
-                case "Узнать информацию о приюте":
                 case "Как взять животное?":
                 case "Прислать отчет о питомце":
                     telegramBot.execute(new SendMessage(chatId, update.message().text()));
-                    break;
-                case "Позвать волонтера":
-                    SendMessage message = new SendMessage(chatId, "Позвать волонтера можно следующими способами");
-                    InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
-
-                    InlineKeyboardButton fromPhone = new InlineKeyboardButton("По номеру телефона"); //TODO: Назвать нормально переменную
-                    fromPhone.callbackData("phone-helper"); //TODO: Назвать нормально, вынести в константы
-
-                    InlineKeyboardButton fromNickName = new InlineKeyboardButton("По никнейму телеграм"); //TODO: Назвать нормально переменную
-                    fromNickName.callbackData("nickname-helper"); //TODO: Назвать нормально, вынести в константы
-
-                    InlineKeyboardButton fromBot = new InlineKeyboardButton("Через бота"); //TODO: Назвать нормально переменную
-                    fromBot.callbackData("from-bot-helper"); //TODO: Назвать нормально, вынести в константы
-
-                    keyboardMarkup.addRow(fromPhone);
-                    keyboardMarkup.addRow(fromNickName);
-                    keyboardMarkup.addRow(fromBot);
-
-                    message.replyMarkup(keyboardMarkup);
-
-                    telegramBot.execute(message);
                     break;
             }
         }
@@ -146,5 +124,12 @@ public class TelegramBotListener implements UpdatesListener {
 
         commands.put("/start", new StartCommand(telegramBot, clientRepository, shelterRepository));
         commands.putAll(getShelters());
-    }
+        commands.put(InfoAboutOfShelter, new InfoAboutOfShelterCommand(telegramBot, clientRepository));
+            commands.put(ShelterWorksSchedule, new ShelterWorksScheduleCommand(telegramBot, clientRepository));
+            commands.put(AdressOfShelter, new AdressOfShelterCommand(telegramBot, clientRepository));
+            commands.put(LocationMap, new LocationMapCommand(telegramBot, clientRepository));
+            commands.put(Propusk, new PropuskCommand(telegramBot, clientRepository));
+                commands.put(back, new InfoAboutOfShelterCommand(telegramBot, clientRepository));
+             commands.put(CallVolunteer, new CallVolunteerCommand(telegramBot, clientRepository));
+ }
 }

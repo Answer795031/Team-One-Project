@@ -1,15 +1,15 @@
-package pro.sky.teamoneproject.commands;
+package pro.sky.teamoneproject.commands.bottomsforshelters;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
+import pro.sky.teamoneproject.commands.Command;
 import pro.sky.teamoneproject.repository.ClientRepository;
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.back;
 
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
-
-public class ShelterDefaultCommand extends Command {
-    public ShelterDefaultCommand(TelegramBot telegramBot, ClientRepository clientRepository) {
+public class ShelterWorksScheduleCommand extends Command {
+    public ShelterWorksScheduleCommand(TelegramBot telegramBot, ClientRepository clientRepository) {
         super(telegramBot, clientRepository);
     }
 
@@ -17,7 +17,7 @@ public class ShelterDefaultCommand extends Command {
     public void action(Update update) {
         long chatId = update.message().chat().id();
         String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для " + messageText + ", доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "Какая то инфа c с расписанием");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -28,10 +28,7 @@ public class ShelterDefaultCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {InfoAboutOfShelter}, //TODO: Вынести в константы
-                {HowYouCanTakePet}, //TODO: Вынести в константы
-                {SendReportAboutOfPet}, //TODO: Вынести в константы
-                {CallVolunteer  } //TODO: Вынести в константы
+                { back }
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);
