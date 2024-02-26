@@ -215,7 +215,7 @@ public class TelegramBotListener implements UpdatesListener {
 
         registrationCommandsAndCallbacks();
 
-        commands.put(back, commands.get(InfoAboutOfShelter)); //TODO: Продумать как переписать
+        commands.put(BACK, commands.get(INFO_ABOUT_OF_SHELTER)); //TODO: Продумать как переписать
 
         telegramBot.setUpdatesListener(this);
     }

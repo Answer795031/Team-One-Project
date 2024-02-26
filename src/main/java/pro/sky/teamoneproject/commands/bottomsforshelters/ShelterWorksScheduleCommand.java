@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.commands.Command;
 
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.ShelterWorksSchedule;
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.back;
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.SHELTER_WORKS_SCHEDULE;
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.BACK;
 
 @Component
 public class ShelterWorksScheduleCommand extends Command {
@@ -17,7 +17,7 @@ public class ShelterWorksScheduleCommand extends Command {
     private TelegramBot telegramBot;
 
     public ShelterWorksScheduleCommand() {
-        super(ShelterWorksSchedule);
+        super(SHELTER_WORKS_SCHEDULE);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ShelterWorksScheduleCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                { back }
+                {BACK}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

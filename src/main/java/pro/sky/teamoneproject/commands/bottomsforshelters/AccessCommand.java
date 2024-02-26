@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.commands.Command;
 
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.ACCESS_TO_SHELTER;
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.back;
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.BACK;
 
 @Component
 public class AccessCommand extends Command {
@@ -35,7 +35,7 @@ public class AccessCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                { back }
+                {BACK}
 
         };
 

@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.commands.Command;
 
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.LocationMap;
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.back;
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.LOCATION_MAP;
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.BACK;
 
 @Component
 public class LocationMapCommand extends Command {
@@ -17,7 +17,7 @@ public class LocationMapCommand extends Command {
     private TelegramBot telegramBot;
 
     public LocationMapCommand() {
-        super(LocationMap);
+        super(LOCATION_MAP);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class LocationMapCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                { back }
+                {BACK}
 
         };
 
