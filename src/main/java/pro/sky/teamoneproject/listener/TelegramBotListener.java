@@ -26,8 +26,6 @@ import pro.sky.teamoneproject.service.ShelterServiceImpl;
 
 import java.util.*;
 
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
-
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class TelegramBotListener implements UpdatesListener {
@@ -196,7 +194,7 @@ public class TelegramBotListener implements UpdatesListener {
             } else if (bean instanceof InlineKeyboardButtonBuilder) { // Регистрируем кнопки
                 InlineKeyboardButtonBuilder inlineKeyboardButtonBuilder = (InlineKeyboardButtonBuilder)bean;
 
-                if (inlineButtons.containsKey(inlineKeyboardButtonBuilder.getCallbackData())) {
+                if (!inlineButtons.containsKey(inlineKeyboardButtonBuilder.getCallbackData())) {
                     registrationInlineButton(inlineKeyboardButtonBuilder);
                     logger.info(String.format("Бин \"%s\"(%s) зарегистрирован как кнопка с келлбеком \"%s\"", bean.getClass().getName(), beanName, inlineKeyboardButtonBuilder.getCallbackData()));
                 }
@@ -214,8 +212,6 @@ public class TelegramBotListener implements UpdatesListener {
         registrationShelterBeans();
 
         registrationCommandsAndCallbacks();
-
-        commands.put(back, commands.get(InfoAboutOfShelter)); //TODO: Продумать как переписать
 
         telegramBot.setUpdatesListener(this);
     }
