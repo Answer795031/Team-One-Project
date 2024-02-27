@@ -15,7 +15,7 @@ public class BackToShelterMenuCommand extends Command {
     private TelegramBot telegramBot;
 
     public BackToShelterMenuCommand() {
-        super(back);
+        super(BACK);
     }
 
     @Override
@@ -33,10 +33,10 @@ public class BackToShelterMenuCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {InfoAboutOfShelter}, //TODO: Вынести в константы
-                {HowYouCanTakePet}, //TODO: Вынести в константы
-                {SendReportAboutOfPet}, //TODO: Вынести в константы
-                {CallVolunteer}
+                {INFO_ABOUT_OF_SHELTER}, //TODO: Вынести в константы
+                {HOW_YOU_CAN_TAKE_PET}, //TODO: Вынести в константы
+                {SEND_REPORT_ABOUT_OF_PET}, //TODO: Вынести в константы
+                {CALL_VOLUNTEER}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

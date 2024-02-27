@@ -16,7 +16,7 @@ public class AddressOfShelterCommand extends Command {
     private TelegramBot telegramBot;
 
     public AddressOfShelterCommand() {
-        super(AddressOfShelter);
+        super(ADDRESS_OF_SHELTER);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class AddressOfShelterCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                { back }
+                {BACK}
 
         };
 

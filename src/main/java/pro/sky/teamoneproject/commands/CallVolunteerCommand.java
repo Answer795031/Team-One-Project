@@ -24,7 +24,7 @@ public class CallVolunteerCommand extends Command{
     private HelpFromBotInlineButtonBuilder helpFromBotInlineButtonBuilder;
 
     public CallVolunteerCommand() {
-        super(CallVolunteer);
+        super(CALL_VOLUNTEER);
     }
 
     @Override

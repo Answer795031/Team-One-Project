@@ -16,7 +16,7 @@ public class InfoAboutOfShelterCommand extends Command {
     private TelegramBot telegramBot;
 
     public InfoAboutOfShelterCommand() {
-        super(InfoAboutOfShelter);
+        super(INFO_ABOUT_OF_SHELTER);
     }
 
     @Override
@@ -34,12 +34,12 @@ public class InfoAboutOfShelterCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                { ShelterWorksSchedule },
-                {AddressOfShelter},
-                { LocationMap },
+                {SHELTER_WORKS_SCHEDULE},
+                {ADDRESS_OF_SHELTER},
+                {LOCATION_MAP},
                 {ACCESS_TO_SHELTER},
-                { CallVolunteer },
-                {back}
+                {CALL_VOLUNTEER},
+                {BACK}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

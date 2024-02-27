@@ -5,19 +5,19 @@ public class ConstantsForShelter {
     /**
      * Кнопки для приюта
      */
-    public static final String InfoAboutOfShelter = "Узнать информацию о приюте";
-    public static final String HowYouCanTakePet = "Как взять животное?";
-    public static final String SendReportAboutOfPet = "Прислать отчет о питомце";
-    public static final String CallVolunteer  = "Позвать волонтера";
+    public static final String INFO_ABOUT_OF_SHELTER = "Узнать информацию о приюте";
+    public static final String HOW_YOU_CAN_TAKE_PET = "Как взять животное?";
+    public static final String SEND_REPORT_ABOUT_OF_PET = "Прислать отчет о питомце";
+    public static final String CALL_VOLUNTEER = "Позвать волонтера";
     /**
      * Кнопки для приюта "Узнать информацию о приюте"
      */
-    public static final String ShelterWorksSchedule = "Расписание работы приюта";
-    public static final String AddressOfShelter = "Адрес приюта";
-    public static final String LocationMap = "Схема проезда";
+    public static final String SHELTER_WORKS_SCHEDULE = "Расписание работы приюта";
+    public static final String ADDRESS_OF_SHELTER = "Адрес приюта";
+    public static final String LOCATION_MAP = "Схема проезда";
     public static final String ACCESS_TO_SHELTER = "Выдать пропуск";//TODO ПРИДУМАЙ НОРМ НАЗВАНИЕ
     /**
      * константа кнопки возврата
      */
-    public static final String back = "Вернуться к меню приюта";
+    public static final String BACK = "Вернуться к меню приюта";
 }

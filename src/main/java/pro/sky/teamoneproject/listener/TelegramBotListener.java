@@ -212,7 +212,6 @@ public class TelegramBotListener implements UpdatesListener {
         registrationShelterBeans();
 
         registrationCommandsAndCallbacks();
-
         telegramBot.setUpdatesListener(this);
     }
 }
