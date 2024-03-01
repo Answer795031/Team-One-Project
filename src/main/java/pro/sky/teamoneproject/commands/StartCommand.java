@@ -17,6 +17,7 @@ public class StartCommand extends Command {
     public StartCommand(TelegramBot telegramBot, ClientRepository clientRepository, ShelterRepository shelterRepository) {
         super(telegramBot, clientRepository);
         this.shelterRepository = shelterRepository;
+
     }
 
     @Override
