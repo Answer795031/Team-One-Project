@@ -46,6 +46,12 @@ public class PetController {
                     ),
                     @Parameter(
                             in = ParameterIn.QUERY,
+                            name = "invalid",
+                            schema = @Schema(description = "Инвалид",type = "boolean"),
+                            description = "Состояние здоровья"
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
                             name = "rulesForGettingToKnowAnimalsUnderTakeFromShelter",
                             description = "правила знакомства с животным до того, как забрать его из приюта"
                     )
@@ -56,6 +62,7 @@ public class PetController {
                       String gender,
                       int age,
                       String species,
+                      boolean invalid,
                       String rulesForGettingToKnowAnimalsUnderTakeFromShelter,
                       String listofDocuments,
                       String listOfRecommendationForMovePet,
@@ -63,7 +70,7 @@ public class PetController {
                       String consultationDoghandlerForFirstCommunication,
                       String contactWitsOtherDoghanlers,
                       String reasonWhyShelterCanReject)  {
-        return petService.addPet(name, gender, age, species,
+        return petService.addPet(name, gender, age, species, invalid,
                 rulesForGettingToKnowAnimalsUnderTakeFromShelter, listofDocuments, listOfRecommendationForMovePet,
                 informationAboutTheLivingConditionPet, consultationDoghandlerForFirstCommunication,
                 contactWitsOtherDoghanlers, reasonWhyShelterCanReject);
@@ -80,6 +87,7 @@ public class PetController {
                          String gender,
                          int age,
                          String species,
+                         boolean invalid,
                          String rulesForGettingToKnowAnimals,
                          String listofDocuments,
                          String listOfRecommendationForMovePet,
@@ -87,7 +95,7 @@ public class PetController {
                          String consultationDoghandlerForFirstCommunication,
                          String contactWitsOtherDoghanlers,
                          String reasonWhyShelterCanReject) {
-        return petService.updatePet(id, name, gender, age, species,rulesForGettingToKnowAnimals,
+        return petService.updatePet(id, name, gender, age, species,invalid, rulesForGettingToKnowAnimals,
                 listofDocuments,
                 listOfRecommendationForMovePet,
                 informationAboutTheLivingConditionPet,

@@ -15,12 +15,12 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Pet addPet(String name, String gender, int age, String species,
+    public Pet addPet(String name, String gender, int age, String species,boolean invalid,
                       String rulesForGettingToKnowAnimals,
                       String listofDocuments, String listOfRecommendationForMovePet,
                       String informationAboutTheLivingConditionPet, String consultationDoghandlerForFirstCommunication,
                       String contactWitsOtherDoghanlers, String reasonWhyShelterCanReject) {
-        Pet pet = new Pet(name, gender, age, species,
+        Pet pet = new Pet(name, gender, age, species,invalid,
                 rulesForGettingToKnowAnimals, listofDocuments, listOfRecommendationForMovePet,
                 informationAboutTheLivingConditionPet, consultationDoghandlerForFirstCommunication,
                 contactWitsOtherDoghanlers, reasonWhyShelterCanReject);
@@ -37,12 +37,12 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Pet updatePet(Long id, String name, String gender, int age, String species, String rulesForGettingToKnowAnimals,
+    public Pet updatePet(Long id, String name, String gender, int age, String species, boolean invalid, String rulesForGettingToKnowAnimals,
                          String listofDocuments, String listOfRecommendationForMovePet,
                          String informationAboutTheLivingConditionPet, String consultationDoghandlerForFirstCommunication,
                          String contactWitsOtherDoghanlers, String reasonWhyShelterCanReject) {
         if (petRepository.findById(id).isEmpty()) {
-            return petRepository.save(new Pet(name, gender, age, species, rulesForGettingToKnowAnimals, listofDocuments, listOfRecommendationForMovePet,
+            return petRepository.save(new Pet(name, gender, age, species,invalid, rulesForGettingToKnowAnimals, listofDocuments, listOfRecommendationForMovePet,
                     informationAboutTheLivingConditionPet, consultationDoghandlerForFirstCommunication,
                     contactWitsOtherDoghanlers, reasonWhyShelterCanReject));
         }
