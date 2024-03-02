@@ -1,8 +1,6 @@
 package pro.sky.teamoneproject.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import pro.sky.teamoneproject.entity.Pet;
 import pro.sky.teamoneproject.exception.PetNotFoundException;
 import pro.sky.teamoneproject.repository.PetRepository;
@@ -17,8 +15,15 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Pet addPet(String name, String gender, int age, String species) {
-        Pet pet = new Pet(name, gender, age, species);
+    public Pet addPet(String name, String gender, int age, String species,
+                      String rulesForGettingToKnowAnimals,
+                      String listofDocuments, String listOfRecommendationForMovePet,
+                      String informationAboutTheLivingConditionPet, String consultationDoghandlerForFirstCommunication,
+                      String contactWitsOtherDoghanlers, String reasonWhyShelterCanReject) {
+        Pet pet = new Pet(name, gender, age, species,
+                rulesForGettingToKnowAnimals, listofDocuments, listOfRecommendationForMovePet,
+                informationAboutTheLivingConditionPet, consultationDoghandlerForFirstCommunication,
+                contactWitsOtherDoghanlers, reasonWhyShelterCanReject);
         petRepository.save(pet);
         return pet;
     }
@@ -32,9 +37,14 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Pet updatePet(Long id, String name, String gender, int age, String species) {
+    public Pet updatePet(Long id, String name, String gender, int age, String species, String rulesForGettingToKnowAnimals,
+                         String listofDocuments, String listOfRecommendationForMovePet,
+                         String informationAboutTheLivingConditionPet, String consultationDoghandlerForFirstCommunication,
+                         String contactWitsOtherDoghanlers, String reasonWhyShelterCanReject) {
         if (petRepository.findById(id).isEmpty()) {
-            return petRepository.save(new Pet(name, gender, age, species));
+            return petRepository.save(new Pet(name, gender, age, species, rulesForGettingToKnowAnimals, listofDocuments, listOfRecommendationForMovePet,
+                    informationAboutTheLivingConditionPet, consultationDoghandlerForFirstCommunication,
+                    contactWitsOtherDoghanlers, reasonWhyShelterCanReject));
         }
         Pet existingPet = petRepository.findById(id).get();
         existingPet.setName(name);
