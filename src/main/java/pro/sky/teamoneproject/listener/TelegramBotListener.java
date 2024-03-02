@@ -21,6 +21,7 @@ import pro.sky.teamoneproject.controller.ShelterController;
 import pro.sky.teamoneproject.entity.Shelter;
 import pro.sky.teamoneproject.exception.AlreadyRegisteredException;
 import pro.sky.teamoneproject.model.telegrambot.request.InlineKeyboardButtonBuilder;
+import pro.sky.teamoneproject.repository.ClientRepository;
 import pro.sky.teamoneproject.repository.ShelterRepository;
 import pro.sky.teamoneproject.service.ShelterServiceImpl;
 
@@ -35,6 +36,8 @@ public class TelegramBotListener implements UpdatesListener {
 
     @Autowired
     private TelegramBot telegramBot;
+    @Autowired
+    private ClientRepository shelterClientRepository;
     @Autowired
     private ShelterRepository shelterRepository;
     @Autowired
@@ -69,6 +72,11 @@ public class TelegramBotListener implements UpdatesListener {
         long chatId = update.message().chat().id();
         String receiveMessage = update.message().text();
 
+        if (!isRegisteredUser(chatId)) {
+            commands.get("/start").action(update);
+            return;
+        }
+
         if (commands.containsKey(receiveMessage)) {
             commands.get(receiveMessage).action(update);
         }
@@ -97,6 +105,10 @@ public class TelegramBotListener implements UpdatesListener {
 
         AnswerCallbackQuery answer = new AnswerCallbackQuery(callbackQuery.id());
         telegramBot.execute(answer);
+    }
+
+    private boolean isRegisteredUser(long chatId) {
+        return !shelterClientRepository.findByChatId(chatId).isEmpty();
     }
 
     /**
