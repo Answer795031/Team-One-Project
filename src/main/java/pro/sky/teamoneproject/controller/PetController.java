@@ -43,6 +43,17 @@ public class PetController {
                             name = "species",
                             schema = @Schema(allowableValues = {"Dog", "Cat"}),
                             description = "Species"
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "invalid",
+                            schema = @Schema(description = "Инвалид",type = "boolean"),
+                            description = "Состояние здоровья"
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "rulesForGettingToKnowAnimalsUnderTakeFromShelter",
+                            description = "правила знакомства с животным до того, как забрать его из приюта"
                     )
             }
     )
@@ -50,8 +61,19 @@ public class PetController {
     public Pet addPet(String name,
                       String gender,
                       int age,
-                      String species) {
-        return petService.addPet(name, gender, age, species);
+                      String species,
+                      boolean invalid,
+                      String rulesForGettingToKnowAnimalsUnderTakeFromShelter,
+                      String listofDocuments,
+                      String listOfRecommendationForMovePet,
+                      String informationAboutTheLivingConditionPet,
+                      String consultationDoghandlerForFirstCommunication,
+                      String contactWitsOtherDoghanlers,
+                      String reasonWhyShelterCanReject)  {
+        return petService.addPet(name, gender, age, species, invalid,
+                rulesForGettingToKnowAnimalsUnderTakeFromShelter, listofDocuments, listOfRecommendationForMovePet,
+                informationAboutTheLivingConditionPet, consultationDoghandlerForFirstCommunication,
+                contactWitsOtherDoghanlers, reasonWhyShelterCanReject);
     }
 
     @GetMapping("/get/{id}")
@@ -64,8 +86,22 @@ public class PetController {
                          String name,
                          String gender,
                          int age,
-                         String species) {
-        return petService.updatePet(id, name, gender, age, species);
+                         String species,
+                         boolean invalid,
+                         String rulesForGettingToKnowAnimals,
+                         String listofDocuments,
+                         String listOfRecommendationForMovePet,
+                         String informationAboutTheLivingConditionPet,
+                         String consultationDoghandlerForFirstCommunication,
+                         String contactWitsOtherDoghanlers,
+                         String reasonWhyShelterCanReject) {
+        return petService.updatePet(id, name, gender, age, species,invalid, rulesForGettingToKnowAnimals,
+                listofDocuments,
+                listOfRecommendationForMovePet,
+                informationAboutTheLivingConditionPet,
+                consultationDoghandlerForFirstCommunication,
+                contactWitsOtherDoghanlers,
+                reasonWhyShelterCanReject);
     }
 
     @DeleteMapping(value = "/remove/{id}")
