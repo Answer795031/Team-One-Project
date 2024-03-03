@@ -55,7 +55,7 @@ public class StartCommand extends Command {
             shelterButtons[i][0] = shelters.get(i).getName();
         }
 
-        return new ReplyKeyboardMarkup(shelterButtons, true, false, false);
+        return new ReplyKeyboardMarkup(shelterButtons, true, true, false);
     }
 
     @Override
