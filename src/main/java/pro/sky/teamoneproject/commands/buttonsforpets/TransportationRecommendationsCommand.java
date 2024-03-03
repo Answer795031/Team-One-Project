@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.bottomsforshelters;
+package pro.sky.teamoneproject.commands.buttonsforpets;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -8,23 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.commands.Command;
 
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.ACCESS_TO_SHELTER;
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.BACK;
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class AccessCommand extends Command {
+public class TransportationRecommendationsCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public AccessCommand() {
-        super(ACCESS_TO_SHELTER);
+    public TransportationRecommendationsCommand() {
+        super(TRANSPORTATION_RECOMMENDATIONS);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
         String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы" + messageText.toLowerCase() + ", доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "Правила транспортировки питомцев:\n1...\n2...\n3...");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -35,8 +34,7 @@ public class AccessCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {BACK}
-
+                {BACK_TO_PET_MENU}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.bottomsforshelters;
+package pro.sky.teamoneproject.commands.buttonsforpets;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -11,19 +11,19 @@ import pro.sky.teamoneproject.commands.Command;
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class InfoAboutOfShelterCommand extends Command {
+public class ListOfDocumentsCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public InfoAboutOfShelterCommand() {
-        super(INFO_ABOUT_OF_SHELTER);
+    public ListOfDocumentsCommand() {
+        super(LIST_OF_DOCUMENTS);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
         String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы " + messageText.toLowerCase() + ", доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "Список документов:\n1...\n2...\n3...");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -34,12 +34,7 @@ public class InfoAboutOfShelterCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {SHELTER_WORKS_SCHEDULE},
-                {ADDRESS_OF_SHELTER},
-                {LOCATION_MAP},
-                {ACCESS_TO_SHELTER},
-                {CALL_VOLUNTEER},
-                {BACK}
+                {BACK_TO_PET_MENU}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);
