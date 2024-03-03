@@ -8,18 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.commands.Command;
 import pro.sky.teamoneproject.entity.Pet;
-import pro.sky.teamoneproject.entity.Shelter;
+import pro.sky.teamoneproject.entity.ShelterClient;
+import pro.sky.teamoneproject.repository.ShelterClientRepository;
 import pro.sky.teamoneproject.repository.PetRepository;
 
 import java.util.List;
 
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
+
 @Component
 public class HowYouCanTakePet extends Command {
     @Autowired
     private TelegramBot telegramBot;
     @Autowired
-    PetRepository petRepository;
+    private PetRepository petRepository;
+    @Autowired
+    private ShelterClientRepository shelterClientRepository;
 
     public HowYouCanTakePet() {
         super(HOW_YOU_CAN_TAKE_PET);
@@ -28,7 +32,7 @@ public class HowYouCanTakePet extends Command {
     public void action(Update update) {
         long chatId = update.message().chat().id();
         SendMessage sendMessage = new SendMessage(chatId, "Выберите того питомца по которому вы бы хотели узнать информацию");
-        sendMessage.replyMarkup(getReplyKeyboard());
+        sendMessage.replyMarkup(getReplyKeyboard(chatId));
         telegramBot.execute(sendMessage);
     }
 
@@ -36,22 +40,63 @@ public class HowYouCanTakePet extends Command {
      * Метод для создания кнопок под вводом сообщение
      * @return таблица кнопок [строка][ячейка строки]
      */
-    private ReplyKeyboardMarkup getReplyKeyboard() {
+    public ReplyKeyboardMarkup getReplyKeyboard(long chatId) {
+        ShelterClient shelterClient = shelterClientRepository.findByChatId(chatId).orElseThrow();
         List<Pet> pets = petRepository.getAll();
-        Integer page = 0;
-        String[][] petButtoms = new String[pets.size()][1];
-        for (int i = 0; i < pets.size(); i++) {
-            petButtoms[i][0] = pets.get(i).getName();
-//            if (i == 8) {
-//                petButtoms[9][2] = "->";
-//                page++;
-//            }
-////            else if (i == pets.size()-1 && i < 9){
-////                petButtoms[pets.size()][1] = "->";
-////            }
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup(new String[0][0], true, false, false);
+
+        int page = shelterClient.getPetViewPageNumber();
+        int columnCount = 2;
+        int petOnePageCount = columnCount * 2;
+        int remainingPets = pets.size() - petOnePageCount * page;
+        int remainingPetsByPage = Math.min(petOnePageCount, remainingPets);
+
+        String[][] petButtons;
+
+        int rowCount = (int)Math.round((double)Math.min(petOnePageCount, pets.size() - petOnePageCount * page) / 2);
+
+        try {
+            petButtons = new String[rowCount][columnCount];
+
+            for (int i = 0; i < remainingPetsByPage; i++) {
+                petButtons[i / columnCount][i % columnCount] = pets.get(i + petOnePageCount * page).getName();
+            }
+
+            for (String[] petButton : petButtons) {
+                if (petButton[1] != null) {
+                    keyboardMarkup.addRow(petButton);
+                } else {
+                    keyboardMarkup.addRow(petButton[0]);
+                }
+            }
+
+        } catch (NegativeArraySizeException ignore) {}
+
+        keyboardMarkup.addRow(getNavigateButtons(page, remainingPets, petOnePageCount));
+
+        return keyboardMarkup;
+    }
+
+    private String[] getNavigateButtons(int page, int remainingPets, int petOnePageCount) {
+        String[] pageButtons;
+        if (page > 0) {
+            if (remainingPets > petOnePageCount) {
+                pageButtons = new String[3];
+                pageButtons[0] = "⬅";
+                pageButtons[1] = BACK;
+                pageButtons[2] = "➡";
+            } else {
+                pageButtons = new String[2];
+                pageButtons[0] = "⬅";
+                pageButtons[1] = BACK;
+            }
+        } else {
+            pageButtons = new String[2];
+            pageButtons[0] = BACK;
+            pageButtons[1] = "➡";
         }
 
-        return new ReplyKeyboardMarkup(petButtoms, true, false, false);
+        return pageButtons;
     }
 
     @Override

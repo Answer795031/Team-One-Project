@@ -19,6 +19,7 @@ public class ShelterClient {
 
     @OneToMany(fetch = FetchType.LAZY)
     public List<Pet> pets;
+    private int petViewPageNumber;
 
     public ShelterClient() {}
 
@@ -68,14 +69,28 @@ public class ShelterClient {
         this.lastTimeAppeal = lastTimeAppeal;
     }
 
+    public int getPetViewPageNumber() {
+        return petViewPageNumber;
+    }
+
+    public void setPetViewPageNumber(int petViewPageNumber) {
+        this.petViewPageNumber = petViewPageNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ShelterClient shelterClient)) return false;
+        if (!(o instanceof ShelterClient that)) return false;
 
-        if (!Objects.equals(id, shelterClient.id)) return false;
-        if (!Objects.equals(username, shelterClient.username)) return false;
-        return Objects.equals(chatId, shelterClient.chatId);
+        if (petViewPageNumber != that.petViewPageNumber) return false;
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(username, that.username)) return false;
+        if (!Objects.equals(chatId, that.chatId)) return false;
+        if (!Objects.equals(selectedShelter, that.selectedShelter))
+            return false;
+        if (!Objects.equals(lastTimeAppeal, that.lastTimeAppeal))
+            return false;
+        return Objects.equals(pets, that.pets);
     }
 
     @Override
@@ -83,6 +98,10 @@ public class ShelterClient {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (chatId != null ? chatId.hashCode() : 0);
+        result = 31 * result + (selectedShelter != null ? selectedShelter.hashCode() : 0);
+        result = 31 * result + (lastTimeAppeal != null ? lastTimeAppeal.hashCode() : 0);
+        result = 31 * result + (pets != null ? pets.hashCode() : 0);
+        result = 31 * result + petViewPageNumber;
         return result;
     }
 }
