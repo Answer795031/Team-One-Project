@@ -76,8 +76,14 @@ public class TelegramBotListener implements UpdatesListener {
         long chatId = update.message().chat().id();
         String receiveMessage = update.message().text();
 
-        if (!isValidUser(chatId) && !(commands.get(receiveMessage) instanceof ShelterDefaultCommand)) {
-            commands.get(BACK_TO_SELECT_SHELTER).action(update);
+        if (!isRegisteredUser(chatId)) {
+            commands.get("/start").action(update);
+            return;
+        }
+
+        if (!(commands.get(receiveMessage) instanceof ShelterDefaultCommand)
+                && !isValidUser(chatId)) {
+            commands.get("/start").action(update);
             return;
         }
 
@@ -111,22 +117,24 @@ public class TelegramBotListener implements UpdatesListener {
     }
 
     /**
-     * Проверка зарегистрирован пользователь, выбран ли у пользователя приют и обращение было менее суток назад
+     * Проверка зарегистрирован ли пользователь
+     * @param chatId id пользователя
+     * @return true - проверка прошла успешно, false - проверка не прошла
+     */
+    private boolean isRegisteredUser(long chatId) {
+        return shelterClientRepository.findByChatId(chatId).isPresent();
+    }
+
+    /**
+     * Проверка валидации выбора приюта
      * @param chatId id пользователя
      * @return true - проверка прошла успешно, false - проверка не прошла
      */
     private boolean isValidUser(long chatId) {
-        if (shelterClientRepository.findByChatId(chatId).isEmpty()) {
-            return false;
-        }
-
         ShelterClient shelter = shelterClientRepository.findByChatId(chatId).get();
-        if (shelter.getSelectedShelter() == null) {
-            return false;
-        }
 
         if (shelter.getLastTimeAppeal() == null) {
-            return false;
+            return true;
         }
 
         return LocalDateTime.now().isBefore(shelter.getLastTimeAppeal().plusDays(1));
