@@ -17,8 +17,11 @@ public class ConstantsForShelter {
     public static final String LOCATION_MAP = "Схема проезда";
     public static final String ACCESS_TO_SHELTER = "Выдать пропуск";//TODO ПРИДУМАЙ НОРМ НАЗВАНИЕ
 
+    public static final String SELECT_SHELTER_MESSAGE = "Выберите приют";
+
     /**
      * константа кнопки возврата
      */
     public static final String BACK = "Вернуться к меню приюта";
+    public static final String BACK_TO_SELECT_SHELTER = "Вернуться к выбору приюта";
 }

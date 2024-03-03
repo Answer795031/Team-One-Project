@@ -54,7 +54,8 @@ public class ShelterDefaultCommand extends Command {
                 {INFO_ABOUT_OF_SHELTER},
                 {HOW_YOU_CAN_TAKE_PET}, //TODO: Вынести в константы
                 {SEND_REPORT_ABOUT_OF_PET}, //TODO: Вынести в константы
-                {CALL_VOLUNTEER}
+                {CALL_VOLUNTEER},
+                {BACK_TO_SELECT_SHELTER}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

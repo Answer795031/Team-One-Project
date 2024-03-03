@@ -19,13 +19,17 @@ import pro.sky.teamoneproject.commands.Command;
 import pro.sky.teamoneproject.commands.ShelterDefaultCommand;
 import pro.sky.teamoneproject.controller.ShelterController;
 import pro.sky.teamoneproject.entity.Shelter;
+import pro.sky.teamoneproject.entity.ShelterClient;
 import pro.sky.teamoneproject.exception.AlreadyRegisteredException;
 import pro.sky.teamoneproject.model.telegrambot.request.InlineKeyboardButtonBuilder;
 import pro.sky.teamoneproject.repository.ShelterClientRepository;
 import pro.sky.teamoneproject.repository.ShelterRepository;
 import pro.sky.teamoneproject.service.ShelterServiceImpl;
 
+import java.time.LocalDateTime;
 import java.util.*;
+
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.BACK_TO_SELECT_SHELTER;
 
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -72,8 +76,8 @@ public class TelegramBotListener implements UpdatesListener {
         long chatId = update.message().chat().id();
         String receiveMessage = update.message().text();
 
-        if (!isRegisteredUser(chatId)) {
-            commands.get("/start").action(update);
+        if (!isValidUser(chatId) && !(commands.get(receiveMessage) instanceof ShelterDefaultCommand)) {
+            commands.get(BACK_TO_SELECT_SHELTER).action(update);
             return;
         }
 
@@ -83,7 +87,6 @@ public class TelegramBotListener implements UpdatesListener {
         else {
             // TODO: Вынести в отдельные классы
             switch (receiveMessage) {
-                case "Как взять животное?":
                 case "Прислать отчет о питомце":
                     telegramBot.execute(new SendMessage(chatId, update.message().text()));
                     break;
@@ -107,8 +110,26 @@ public class TelegramBotListener implements UpdatesListener {
         telegramBot.execute(answer);
     }
 
-    private boolean isRegisteredUser(long chatId) {
-        return !shelterClientRepository.findByChatId(chatId).isEmpty();
+    /**
+     * Проверка зарегистрирован пользователь, выбран ли у пользователя приют и обращение было менее суток назад
+     * @param chatId id пользователя
+     * @return true - проверка прошла успешно, false - проверка не прошла
+     */
+    private boolean isValidUser(long chatId) {
+        if (shelterClientRepository.findByChatId(chatId).isEmpty()) {
+            return false;
+        }
+
+        ShelterClient shelter = shelterClientRepository.findByChatId(chatId).get();
+        if (shelter.getSelectedShelter() == null) {
+            return false;
+        }
+
+        if (shelter.getLastTimeAppeal() == null) {
+            return false;
+        }
+
+        return LocalDateTime.now().isBefore(shelter.getLastTimeAppeal().plusDays(1));
     }
 
     /**
