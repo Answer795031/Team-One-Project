@@ -91,9 +91,14 @@ public class HowYouCanTakePet extends Command {
                 pageButtons[1] = BACK;
             }
         } else {
-            pageButtons = new String[2];
-            pageButtons[0] = BACK;
-            pageButtons[1] = "➡";
+            if (remainingPets > petOnePageCount) {
+                pageButtons = new String[2];
+                pageButtons[0] = BACK;
+                pageButtons[1] = "➡";
+            } else {
+                pageButtons = new String[1];
+                pageButtons[0] = BACK;
+            }
         }
 
         return pageButtons;
