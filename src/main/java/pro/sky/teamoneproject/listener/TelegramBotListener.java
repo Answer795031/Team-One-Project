@@ -21,7 +21,7 @@ import pro.sky.teamoneproject.controller.ShelterController;
 import pro.sky.teamoneproject.entity.Shelter;
 import pro.sky.teamoneproject.exception.AlreadyRegisteredException;
 import pro.sky.teamoneproject.model.telegrambot.request.InlineKeyboardButtonBuilder;
-import pro.sky.teamoneproject.repository.ClientRepository;
+import pro.sky.teamoneproject.repository.ShelterClientRepository;
 import pro.sky.teamoneproject.repository.ShelterRepository;
 import pro.sky.teamoneproject.service.ShelterServiceImpl;
 
@@ -37,7 +37,7 @@ public class TelegramBotListener implements UpdatesListener {
     @Autowired
     private TelegramBot telegramBot;
     @Autowired
-    private ClientRepository shelterClientRepository;
+    private ShelterClientRepository shelterClientRepository;
     @Autowired
     private ShelterRepository shelterRepository;
     @Autowired

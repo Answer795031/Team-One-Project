@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.entity.Shelter;
 import pro.sky.teamoneproject.entity.ShelterClient;
-import pro.sky.teamoneproject.repository.ClientRepository;
+import pro.sky.teamoneproject.repository.ShelterClientRepository;
 import pro.sky.teamoneproject.repository.ShelterRepository;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class StartCommand extends Command {
     @Autowired
     protected TelegramBot telegramBot;
     @Autowired
-    protected ClientRepository clientRepository;
+    protected ShelterClientRepository shelterClientRepository;
     @Autowired
     private ShelterRepository shelterRepository;
 
@@ -31,11 +31,11 @@ public class StartCommand extends Command {
         long chatId = update.message().chat().id();
         String username = update.message().chat().username();
 
-        if (clientRepository.findByChatId(chatId).isEmpty()) {
+        if (shelterClientRepository.findByChatId(chatId).isEmpty()) {
             ShelterClient shelterClient = new ShelterClient();
             shelterClient.setUsername(username);
             shelterClient.setChatId(chatId);
-            clientRepository.save(shelterClient);
+            shelterClientRepository.save(shelterClient);
         }
 
         SendMessage sendMessage = new SendMessage(chatId, "*** Приветственное сообщение ***"); //TODO: Придумать приветственное сообщение

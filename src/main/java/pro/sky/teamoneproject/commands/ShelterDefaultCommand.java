@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.entity.Shelter;
 import pro.sky.teamoneproject.entity.ShelterClient;
-import pro.sky.teamoneproject.repository.ClientRepository;
+import pro.sky.teamoneproject.repository.ShelterClientRepository;
 import pro.sky.teamoneproject.repository.ShelterRepository;
 
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ public class ShelterDefaultCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
     @Autowired
-    private ClientRepository clientRepository;
+    private ShelterClientRepository shelterClientRepository;
     @Autowired
     private ShelterRepository shelterRepository;
 
@@ -35,10 +35,10 @@ public class ShelterDefaultCommand extends Command {
 
         Shelter shelter = shelterRepository.findByName(messageText).orElseThrow();
 
-        ShelterClient client = clientRepository.findByChatId(chatId).orElseThrow();
+        ShelterClient client = shelterClientRepository.findByChatId(chatId).orElseThrow();
         client.setSelectedShelter(shelter);
         client.setLastTimeAppeal(LocalDateTime.now());
-        clientRepository.save(client);
+        shelterClientRepository.save(client);
 
         SendMessage sendMessage = new SendMessage(chatId, shelter.getDescription() + "\nДля приюта \"" + messageText + "\", доступны следующие команды");
         sendMessage.replyMarkup(getReplyKeyboard());

@@ -5,6 +5,6 @@ import pro.sky.teamoneproject.entity.ShelterClient;
 
 import java.util.Optional;
 
-public interface ClientRepository extends JpaRepository<ShelterClient, Long> {
+public interface ShelterClientRepository extends JpaRepository<ShelterClient, Long> {
     Optional<ShelterClient> findByChatId(Long chatId);
 }
