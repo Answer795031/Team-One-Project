@@ -17,13 +17,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import pro.sky.teamoneproject.commands.Command;
 import pro.sky.teamoneproject.commands.ShelterDefaultCommand;
+import pro.sky.teamoneproject.commands.buttonsforpets.InfoAboutOfPetDefaultCommand;
+import pro.sky.teamoneproject.controller.PetController;
 import pro.sky.teamoneproject.controller.ShelterController;
+import pro.sky.teamoneproject.entity.Pet;
 import pro.sky.teamoneproject.entity.Shelter;
 import pro.sky.teamoneproject.entity.ShelterClient;
 import pro.sky.teamoneproject.exception.AlreadyRegisteredException;
 import pro.sky.teamoneproject.model.telegrambot.request.InlineKeyboardButtonBuilder;
+import pro.sky.teamoneproject.repository.PetRepository;
 import pro.sky.teamoneproject.repository.ShelterClientRepository;
 import pro.sky.teamoneproject.repository.ShelterRepository;
+import pro.sky.teamoneproject.service.PetServiceImpl;
 import pro.sky.teamoneproject.service.ShelterServiceImpl;
 
 import java.time.LocalDateTime;
@@ -44,6 +49,8 @@ public class TelegramBotListener implements UpdatesListener {
     private ShelterClientRepository shelterClientRepository;
     @Autowired
     private ShelterRepository shelterRepository;
+    @Autowired
+    private PetRepository petRepository;
     @Autowired
     private GenericApplicationContext applicationContext;
 
@@ -183,6 +190,24 @@ public class TelegramBotListener implements UpdatesListener {
     }
 
     /**
+     * Выгрузка питомцев с БД и регистрация их как бины
+     */
+    private void registrationPetsBeans() {
+        if (applicationContext.containsBeanDefinition("infoAboutOfPetDefaultCommand")) {
+            applicationContext.removeBeanDefinition("infoAboutOfPetDefaultCommand");
+        }
+
+        for (Pet pet : petRepository.getAll()) {
+            if (commands.containsKey(pet.getName())) {
+                continue;
+            }
+
+            applicationContext.registerBean(pet.getName(), InfoAboutOfPetDefaultCommand.class);
+            ((Command)applicationContext.getBean(pet.getName())).setCommand(pet.getName());
+        }
+    }
+
+    /**
      * Обновление списка приютов.
      */
     public void updateSheltersCommand() {
@@ -201,6 +226,24 @@ public class TelegramBotListener implements UpdatesListener {
     }
 
     /**
+     * Обновление списка питомцев.
+     */
+    public void updatePetsCommand() {
+        commands.values().removeIf(command -> {
+            boolean isRemove = command instanceof InfoAboutOfPetDefaultCommand;
+
+            if (isRemove) {
+                applicationContext.removeBeanDefinition(command.getCommand());
+            }
+
+            return isRemove;
+        });
+
+        registrationPetsBeans();
+        registrationCommandsAndCallbacks();
+    }
+
+    /**
      * Регистрация команд и кнопок в соответствующие кэши
      */
     private void registrationCommandsAndCallbacks() {
@@ -209,7 +252,9 @@ public class TelegramBotListener implements UpdatesListener {
             // Исключаем текущий класс, т.к. происходит зацикливание FIXME: Исправить зацикливание
             if (beanName.equalsIgnoreCase(this.getClass().getSimpleName())
                     || beanName.equalsIgnoreCase(ShelterServiceImpl.class.getSimpleName())
-                    || beanName.equalsIgnoreCase(ShelterController.class.getSimpleName())) {
+                    || beanName.equalsIgnoreCase(ShelterController.class.getSimpleName())
+                    || beanName.equalsIgnoreCase(PetServiceImpl.class.getSimpleName())
+                    || beanName.equalsIgnoreCase(PetController.class.getSimpleName())) {
                 continue;
             }
 
@@ -251,6 +296,7 @@ public class TelegramBotListener implements UpdatesListener {
     @PostConstruct
     private void init() {
         registrationShelterBeans();
+        registrationPetsBeans();
 
         registrationCommandsAndCallbacks();
         telegramBot.setUpdatesListener(this);

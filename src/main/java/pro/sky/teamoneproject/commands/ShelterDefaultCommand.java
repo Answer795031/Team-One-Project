@@ -51,9 +51,9 @@ public class ShelterDefaultCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {INFO_ABOUT_OF_SHELTER}, //TODO: Вынести в константы
-                {HOW_YOU_CAN_TAKE_PET}, //TODO: Вынести в константы
-                {SEND_REPORT_ABOUT_OF_PET}, //TODO: Вынести в константы
+                {INFO_ABOUT_OF_SHELTER},
+                {HOW_YOU_CAN_TAKE_PET},
+                {SEND_REPORT_ABOUT_OF_PET},
                 {CALL_VOLUNTEER},
                 {BACK_TO_SELECT_SHELTER}
         };

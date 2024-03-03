@@ -23,20 +23,7 @@ public class ShelterWorksScheduleCommand extends Command {
     public void action(Update update) {
         long chatId = update.message().chat().id();
         SendMessage sendMessage = new SendMessage(chatId, "Какая то инфа c с расписанием");
-        sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
-    }
-
-    /**
-     * Метод для создания кнопок под вводом сообщение
-     * @return таблица кнопок [строка][ячейка строки]
-     */
-    private ReplyKeyboardMarkup getReplyKeyboard() {
-        String[][] keyboard = new String[][] {
-                {BACK_TO_SHELTER_MENU}
-        };
-
-        return new ReplyKeyboardMarkup(keyboard, true, false, false);
     }
 
     @Override
