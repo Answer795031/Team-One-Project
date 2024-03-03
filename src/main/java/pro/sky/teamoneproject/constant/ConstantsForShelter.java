@@ -33,10 +33,17 @@ public class ConstantsForShelter {
     public static final String RULES_OF_SERVICE = "Правила предоставления услуг"; // TODO: ПОДУМАТЬ НАД ФОРМУЛИРОВКОЙ
 
     /**
+     * Сообщения
+     */
+    public static final String SELECT_SHELTER_MESSAGE = "Выберите приют";
+
+    /**
      * Константы кнопок возврата
      */
     public static final String BACK_TO_SHELTER_MENU = "Вернуться к меню приюта";
     public static final String BACK_TO_PET_MENU = "Вернуться к меню информации";
     public static final String BACK_TO_EXTRA_PET_MENU = "Назад";
     public static final String BACK_TO_MAIN_MENU = "В главное меню";
+    public static final String BACK_TO_SELECT_SHELTER = "Вернуться к выбору приюта";
+    public static final String BACK_TO_SELECT_PETS = "Вернуться к выбору питомца";
 }

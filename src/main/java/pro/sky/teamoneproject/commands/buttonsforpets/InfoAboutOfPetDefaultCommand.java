@@ -11,18 +11,17 @@ import pro.sky.teamoneproject.commands.Command;
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class InfoAboutOfPetCommand extends Command {
+public class InfoAboutOfPetDefaultCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public InfoAboutOfPetCommand() {
-        super(HOW_YOU_CAN_TAKE_PET);
+    public InfoAboutOfPetDefaultCommand() {
+        super(null);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
-        String messageText = update.message().text();
         SendMessage sendMessage = new SendMessage(chatId, "Пожалуйста, ознакомьтесь со всеми пунктами!");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
@@ -42,7 +41,7 @@ public class InfoAboutOfPetCommand extends Command {
                 {DOG_HANDLERS_RECOMMENDATIONS},
                 {RULES_OF_SERVICE},
                 {CALL_VOLUNTEER},
-                {BACK_TO_MAIN_MENU}
+                {BACK_TO_SELECT_PETS}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

@@ -22,7 +22,6 @@ public class BackToMainMenuCommand extends Command {
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
-        String messageText = update.message().text();
         SendMessage sendMessage = new SendMessage(chatId, "Доступны следующие команды");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
@@ -37,7 +36,8 @@ public class BackToMainMenuCommand extends Command {
                 {INFO_ABOUT_OF_SHELTER}, //TODO: Вынести в константы
                 {HOW_YOU_CAN_TAKE_PET}, //TODO: Вынести в константы
                 {SEND_REPORT_ABOUT_OF_PET}, //TODO: Вынести в константы
-                {CALL_VOLUNTEER}
+                {CALL_VOLUNTEER},
+                {BACK_TO_SELECT_SHELTER}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);
