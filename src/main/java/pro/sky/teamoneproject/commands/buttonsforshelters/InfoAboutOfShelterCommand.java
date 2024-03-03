@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands;
+package pro.sky.teamoneproject.commands.buttonsforshelters;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -6,41 +6,24 @@ import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pro.sky.teamoneproject.entity.Shelter;
-import pro.sky.teamoneproject.entity.ShelterClient;
-import pro.sky.teamoneproject.repository.ClientRepository;
-import pro.sky.teamoneproject.repository.ShelterRepository;
-
-import java.time.LocalDateTime;
+import pro.sky.teamoneproject.commands.Command;
 
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class ShelterDefaultCommand extends Command {
+public class InfoAboutOfShelterCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
-    @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
-    private ShelterRepository shelterRepository;
 
-    public ShelterDefaultCommand() {
-        super(null);
+    public InfoAboutOfShelterCommand() {
+        super(INFO_ABOUT_OF_SHELTER);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
         String messageText = update.message().text();
-
-        Shelter shelter = shelterRepository.findByName(messageText).orElseThrow();
-
-        ShelterClient client = clientRepository.findByChatId(chatId).orElseThrow();
-        client.setSelectedShelter(shelter);
-        client.setLastTimeAppeal(LocalDateTime.now());
-        clientRepository.save(client);
-
-        SendMessage sendMessage = new SendMessage(chatId, "Доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы " + messageText.toLowerCase() + ", доступны следующие команды");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -51,10 +34,12 @@ public class ShelterDefaultCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {INFO_ABOUT_OF_SHELTER}, //TODO: Вынести в константы
-                {HOW_YOU_CAN_TAKE_PET}, //TODO: Вынести в константы
-                {SEND_REPORT_ABOUT_OF_PET}, //TODO: Вынести в константы
+                {SHELTER_WORKS_SCHEDULE},
+                {ADDRESS_OF_SHELTER},
+                {LOCATION_MAP},
+                {ACCESS_TO_SHELTER},
                 {CALL_VOLUNTEER},
+                {BACK_TO_MAIN_MENU}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

@@ -4,38 +4,41 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.AnswerCallbackQuery;
-import com.pengrad.telegrambot.request.SendContact;
 import com.pengrad.telegrambot.request.SendMessage;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import pro.sky.teamoneproject.commands.Command;
 import pro.sky.teamoneproject.commands.ShelterDefaultCommand;
-import pro.sky.teamoneproject.commands.StartCommand;
+import pro.sky.teamoneproject.controller.ShelterController;
 import pro.sky.teamoneproject.entity.Shelter;
-import pro.sky.teamoneproject.repository.ClientRepository;
+import pro.sky.teamoneproject.exception.AlreadyRegisteredException;
+import pro.sky.teamoneproject.model.telegrambot.request.InlineKeyboardButtonBuilder;
 import pro.sky.teamoneproject.repository.ShelterRepository;
+import pro.sky.teamoneproject.service.ShelterServiceImpl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class TelegramBotListener implements UpdatesListener {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final Map<String, Command> commands = new HashMap<>();
+    private final Map<String, InlineKeyboardButtonBuilder> inlineButtons = new HashMap<>();
 
     @Autowired
     private TelegramBot telegramBot;
     @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
     private ShelterRepository shelterRepository;
+    @Autowired
+    private GenericApplicationContext applicationContext;
 
     /**
      * Обработчик полученных обновлений (сообщения, callback)
@@ -60,7 +63,7 @@ public class TelegramBotListener implements UpdatesListener {
 
     /**
      * Обработчик полученных сообщений
-     * @param update полученные обновления
+     * @param update полученное обновление от бота (сообщения, callback)
      */
     private void processMessage(Update update) {
         long chatId = update.message().chat().id();
@@ -68,34 +71,13 @@ public class TelegramBotListener implements UpdatesListener {
 
         if (commands.containsKey(receiveMessage)) {
             commands.get(receiveMessage).action(update);
-        } else {
+        }
+        else {
             // TODO: Вынести в отдельные классы
             switch (receiveMessage) {
-                case "Узнать информацию о приюте":
                 case "Как взять животное?":
                 case "Прислать отчет о питомце":
                     telegramBot.execute(new SendMessage(chatId, update.message().text()));
-                    break;
-                case "Позвать волонтера":
-                    SendMessage message = new SendMessage(chatId, "Позвать волонтера можно следующими способами");
-                    InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
-
-                    InlineKeyboardButton fromPhone = new InlineKeyboardButton("По номеру телефона"); //TODO: Назвать нормально переменную
-                    fromPhone.callbackData("phone-helper"); //TODO: Назвать нормально, вынести в константы
-
-                    InlineKeyboardButton fromNickName = new InlineKeyboardButton("По никнейму телеграм"); //TODO: Назвать нормально переменную
-                    fromNickName.callbackData("nickname-helper"); //TODO: Назвать нормально, вынести в константы
-
-                    InlineKeyboardButton fromBot = new InlineKeyboardButton("Через бота"); //TODO: Назвать нормально переменную
-                    fromBot.callbackData("from-bot-helper"); //TODO: Назвать нормально, вынести в константы
-
-                    keyboardMarkup.addRow(fromPhone);
-                    keyboardMarkup.addRow(fromNickName);
-                    keyboardMarkup.addRow(fromBot);
-
-                    message.replyMarkup(keyboardMarkup);
-
-                    telegramBot.execute(message);
                     break;
             }
         }
@@ -103,38 +85,123 @@ public class TelegramBotListener implements UpdatesListener {
 
     /**
      * Обработчик полученных callback от кнопок сообщений
-     * @param update полученные обновления
+     * @param update полученное обновление от бота (сообщения, callback)
      */
     private void processCallbackQuery(Update update) {
         CallbackQuery callbackQuery = update.callbackQuery();
-        long chatId = callbackQuery.message().chat().id();
+        String callbackData = callbackQuery.data().toLowerCase();
 
-        if (callbackQuery.data().equals("phone-helper")) {
-            SendContact sendContact = new SendContact(chatId, "7-800-555-35-35", "Проще позвонить чем просто написать");
-            telegramBot.execute(sendContact);
-        } else if (callbackQuery.data().equals("nikname-helper")) {
-            SendMessage sendMessage = new SendMessage(chatId,
-                    """
-                            @saver_cat
-                            @Tretkir99
-                            @AlexeySamohvalov
-                            @MTarasov13
-                            """);
-            telegramBot.execute(sendMessage);
-        } else if (callbackQuery.data().equals("from-bot-helper")) {
-            //TODO: Реализовать
+        if (inlineButtons.containsKey(callbackData)) {
+            inlineButtons.get(callbackData).onClick(update);
         }
 
         AnswerCallbackQuery answer = new AnswerCallbackQuery(callbackQuery.id());
         telegramBot.execute(answer);
     }
 
-    private Map<String, Command> getShelters() {
-        Map<String, Command> shelters = new HashMap<>();
-        for (Shelter shelter : shelterRepository.getAll()) {
-            shelters.put(shelter.getName(), new ShelterDefaultCommand(telegramBot, clientRepository));
+    /**
+     * Регистрация команды в кэш
+     * @param command - команда
+     */
+    private void registrationCommand(Command command) {
+        if (commands.containsKey(command.getCommand())) {
+            throw new AlreadyRegisteredException(String.format("Команда \"%s\" уже зарегистрирована!", command.getCommand()));
         }
-        return shelters;
+
+        commands.put(command.getCommand(), command);
+    }
+
+    /**
+     * Регистрация кнопки в кэш
+     * @param inlineKeyboardButtonBuilder - кнопка
+     */
+    private void registrationInlineButton(InlineKeyboardButtonBuilder inlineKeyboardButtonBuilder) {
+        if (inlineButtons.containsKey(inlineKeyboardButtonBuilder.getCallbackData())) {
+            throw new AlreadyRegisteredException(String.format("Кнопка \"%s\" уже зарегистрирована!", inlineKeyboardButtonBuilder.getCallbackData()));
+        }
+
+        inlineButtons.put(inlineKeyboardButtonBuilder.getCallbackData(), inlineKeyboardButtonBuilder);
+    }
+
+    /**
+     * Выгрузка приютов с БД и регистрация их как бины
+     */
+    private void registrationShelterBeans() {
+        if (applicationContext.containsBeanDefinition("shelterDefaultCommand")) {
+            applicationContext.removeBeanDefinition("shelterDefaultCommand");
+        }
+
+        for (Shelter shelter : shelterRepository.getAll()) {
+            if (commands.containsKey(shelter.getName())) {
+                continue;
+            }
+
+            applicationContext.registerBean(shelter.getName(), ShelterDefaultCommand.class);
+            ((Command)applicationContext.getBean(shelter.getName())).setCommand(shelter.getName());
+        }
+    }
+
+    /**
+     * Обновление списка приютов.
+     */
+    public void updateSheltersCommand() {
+        commands.values().removeIf(command -> {
+            boolean isRemove = command instanceof ShelterDefaultCommand;
+
+            if (isRemove) {
+                applicationContext.removeBeanDefinition(command.getCommand());
+            }
+
+            return isRemove;
+        });
+
+        registrationShelterBeans();
+        registrationCommandsAndCallbacks();
+    }
+
+    /**
+     * Регистрация команд и кнопок в соответствующие кэши
+     */
+    private void registrationCommandsAndCallbacks() {
+        // Проходим по всем зарегистрированным бинам
+        for (String beanName : applicationContext.getBeanDefinitionNames()) {
+            // Исключаем текущий класс, т.к. происходит зацикливание FIXME: Исправить зацикливание
+            if (beanName.equalsIgnoreCase(this.getClass().getSimpleName())
+                    || beanName.equalsIgnoreCase(ShelterServiceImpl.class.getSimpleName())
+                    || beanName.equalsIgnoreCase(ShelterController.class.getSimpleName())) {
+                continue;
+            }
+
+            // Получаем экземпляр класса бина
+            Object bean = applicationContext.getBean(beanName);
+
+            // Исключаем классы без аннотации Component
+            if (!bean.getClass().isAnnotationPresent(Component.class)) {
+                continue;
+            }
+
+            if (bean instanceof Command) { // Регистрируем команды
+                Command command = (Command)bean;
+                if (command.getCommand() == null) {
+                    logger.error(String.format("Команда бина \"%s\"(%s) равна null!", bean.getClass().getName(), beanName));
+                    continue;
+                }
+
+                if (!commands.containsKey(command.getCommand())) {
+                    registrationCommand(command);
+                    logger.info(String.format("Бин \"%s\"(%s) зарегистрирован как команда \"%s\"", bean.getClass().getName(), beanName, command.getCommand()));
+                }
+            } else if (bean instanceof InlineKeyboardButtonBuilder) { // Регистрируем кнопки
+                InlineKeyboardButtonBuilder inlineKeyboardButtonBuilder = (InlineKeyboardButtonBuilder)bean;
+
+                if (!inlineButtons.containsKey(inlineKeyboardButtonBuilder.getCallbackData())) {
+                    registrationInlineButton(inlineKeyboardButtonBuilder);
+                    logger.info(String.format("Бин \"%s\"(%s) зарегистрирован как кнопка с келлбеком \"%s\"", bean.getClass().getName(), beanName, inlineKeyboardButtonBuilder.getCallbackData()));
+                }
+            } else { // Выводим незарегистрированные бины
+                logger.warn(String.format("Бин \"%s\"(%s) не зарегистрирован", bean.getClass().getName(), beanName));
+            }
+        }
     }
 
     /**
@@ -142,9 +209,9 @@ public class TelegramBotListener implements UpdatesListener {
      */
     @PostConstruct
     private void init() {
-        telegramBot.setUpdatesListener(this);
+        registrationShelterBeans();
 
-        commands.put("/start", new StartCommand(telegramBot, clientRepository, shelterRepository));
-        commands.putAll(getShelters());
+        registrationCommandsAndCallbacks();
+        telegramBot.setUpdatesListener(this);
     }
 }

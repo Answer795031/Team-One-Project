@@ -1,8 +1,6 @@
 package pro.sky.teamoneproject.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import pro.sky.teamoneproject.entity.Pet;
 import pro.sky.teamoneproject.exception.PetNotFoundException;
 import pro.sky.teamoneproject.repository.PetRepository;
