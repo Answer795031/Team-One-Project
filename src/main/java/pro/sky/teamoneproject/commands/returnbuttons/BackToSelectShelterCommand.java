@@ -1,10 +1,12 @@
-package pro.sky.teamoneproject.commands;
+package pro.sky.teamoneproject.commands.returnbuttons;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pro.sky.teamoneproject.commands.Command;
+import pro.sky.teamoneproject.commands.StartCommand;
 import pro.sky.teamoneproject.entity.ShelterClient;
 import pro.sky.teamoneproject.repository.ShelterClientRepository;
 

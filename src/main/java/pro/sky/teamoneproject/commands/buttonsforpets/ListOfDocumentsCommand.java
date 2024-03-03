@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.bottomsforshelters;
+package pro.sky.teamoneproject.commands.buttonsforpets;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -8,23 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.commands.Command;
 
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.LOCATION_MAP;
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.BACK;
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class LocationMapCommand extends Command {
+public class ListOfDocumentsCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public LocationMapCommand() {
-        super(LOCATION_MAP);
+    public ListOfDocumentsCommand() {
+        super(LIST_OF_DOCUMENTS);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
         String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы" + messageText.toLowerCase() + ", доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "Список документов:\n1...\n2...\n3...");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -35,8 +34,7 @@ public class LocationMapCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {BACK}
-
+                {BACK_TO_PET_MENU}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

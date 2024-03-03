@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands;
+package pro.sky.teamoneproject.commands.buttonsforshelters;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -6,23 +6,24 @@ import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pro.sky.teamoneproject.commands.Command;
 
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class BackToShelterMenuCommand extends Command {
+public class AccessCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public BackToShelterMenuCommand() {
-        super(BACK);
+    public AccessCommand() {
+        super(ACCESS_TO_SHELTER);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
         String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для приюта \"" + messageText + "\", доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы" + messageText.toLowerCase() + ", доступны следующие команды");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -33,13 +34,19 @@ public class BackToShelterMenuCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {INFO_ABOUT_OF_SHELTER}, //TODO: Вынести в константы
-                {HOW_YOU_CAN_TAKE_PET}, //TODO: Вынести в константы
-                {SEND_REPORT_ABOUT_OF_PET}, //TODO: Вынести в константы
-                {CALL_VOLUNTEER},
-                {BACK_TO_SELECT_SHELTER}
+                {BACK_TO_SHELTER_MENU}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

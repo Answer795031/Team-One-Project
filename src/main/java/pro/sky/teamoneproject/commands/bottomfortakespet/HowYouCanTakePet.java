@@ -83,21 +83,21 @@ public class HowYouCanTakePet extends Command {
             if (remainingPets > petOnePageCount) {
                 pageButtons = new String[3];
                 pageButtons[0] = "⬅";
-                pageButtons[1] = BACK;
+                pageButtons[1] = BACK_TO_MAIN_MENU;
                 pageButtons[2] = "➡";
             } else {
                 pageButtons = new String[2];
                 pageButtons[0] = "⬅";
-                pageButtons[1] = BACK;
+                pageButtons[1] = BACK_TO_MAIN_MENU;
             }
         } else {
             if (remainingPets > petOnePageCount) {
                 pageButtons = new String[2];
-                pageButtons[0] = BACK;
+                pageButtons[0] = BACK_TO_MAIN_MENU;
                 pageButtons[1] = "➡";
             } else {
                 pageButtons = new String[1];
-                pageButtons[0] = BACK;
+                pageButtons[0] = BACK_TO_MAIN_MENU;
             }
         }
 

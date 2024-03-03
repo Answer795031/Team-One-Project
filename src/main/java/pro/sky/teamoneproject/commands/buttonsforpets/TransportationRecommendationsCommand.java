@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.bottomsforshelters;
+package pro.sky.teamoneproject.commands.buttonsforpets;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -8,22 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.commands.Command;
 
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.SHELTER_WORKS_SCHEDULE;
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.BACK;
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class ShelterWorksScheduleCommand extends Command {
+public class TransportationRecommendationsCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public ShelterWorksScheduleCommand() {
-        super(SHELTER_WORKS_SCHEDULE);
+    public TransportationRecommendationsCommand() {
+        super(TRANSPORTATION_RECOMMENDATIONS);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
-        SendMessage sendMessage = new SendMessage(chatId, "Какая то инфа c с расписанием");
+        String messageText = update.message().text();
+        SendMessage sendMessage = new SendMessage(chatId, "Правила транспортировки питомцев:\n1...\n2...\n3...");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -34,7 +34,7 @@ public class ShelterWorksScheduleCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {BACK}
+                {BACK_TO_PET_MENU}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

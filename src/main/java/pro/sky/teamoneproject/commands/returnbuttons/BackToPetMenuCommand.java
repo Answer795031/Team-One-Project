@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.bottomsforshelters;
+package pro.sky.teamoneproject.commands.returnbuttons;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -11,19 +11,19 @@ import pro.sky.teamoneproject.commands.Command;
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class AddressOfShelterCommand extends Command {
+public class BackToPetMenuCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public AddressOfShelterCommand() {
-        super(ADDRESS_OF_SHELTER);
+    public BackToPetMenuCommand() {
+        super(BACK_TO_PET_MENU);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
         String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы " + messageText.toLowerCase() + ", доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "Пожалуйста, ознакомьтесь со всеми пунктами!");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -34,20 +34,17 @@ public class AddressOfShelterCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {BACK}
-
+                {RULES_OF_MEETING_WITH_PET},
+                {LIST_OF_DOCUMENTS},
+                {TRANSPORTATION_RECOMMENDATIONS},
+                {HOME_IMPROVEMENT_TIPS},
+                {FIRST_MEETING_WITH_PET},
+                {DOG_HANDLERS_RECOMMENDATIONS},
+                {RULES_OF_SERVICE},
+                {CALL_VOLUNTEER},
+                {BACK_TO_SHELTER_MENU}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
     }
 }
