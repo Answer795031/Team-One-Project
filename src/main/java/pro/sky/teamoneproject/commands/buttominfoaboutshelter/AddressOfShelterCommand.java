@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.buttonsforshelters;
+package pro.sky.teamoneproject.commands.buttominfoaboutshelter;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -11,19 +11,19 @@ import pro.sky.teamoneproject.commands.Command;
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class AccessCommand extends Command {
+public class AddressOfShelterCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public AccessCommand() {
-        super(ACCESS_TO_SHELTER);
+    public AddressOfShelterCommand() {
+        super(ADDRESS_OF_SHELTER);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
         String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы" + messageText.toLowerCase() + ", доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы " + messageText.toLowerCase() + ", доступны следующие команды");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }

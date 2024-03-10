@@ -53,6 +53,7 @@ public class ShelterDefaultCommand extends Command {
         String[][] keyboard = new String[][] {
                 {INFO_ABOUT_OF_SHELTER},
                 {HOW_YOU_CAN_TAKE_PET},
+                {GET_SHELTER_CLIENT_NUMBER},
                 {SEND_REPORT_ABOUT_OF_PET},
                 {CALL_VOLUNTEER},
                 {BACK_TO_SELECT_SHELTER}

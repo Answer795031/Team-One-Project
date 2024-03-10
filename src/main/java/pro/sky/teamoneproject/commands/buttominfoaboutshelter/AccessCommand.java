@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.buttonsforpets;
+package pro.sky.teamoneproject.commands.buttominfoaboutshelter;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -11,19 +11,19 @@ import pro.sky.teamoneproject.commands.Command;
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class FirstMeetingWithPetCommand extends Command {
+public class AccessCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public FirstMeetingWithPetCommand() {
-        super(FIRST_MEETING_WITH_PET);
+    public AccessCommand() {
+        super(ACCESS_TO_SHELTER);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
         String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Советы по первому знакомству с питомцем:\n1...\n2...\n3...");
+        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы" + messageText.toLowerCase() + ", доступны следующие команды");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -34,7 +34,7 @@ public class FirstMeetingWithPetCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {BACK_TO_PET_MENU}
+                {BACK_TO_SHELTER_MENU}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

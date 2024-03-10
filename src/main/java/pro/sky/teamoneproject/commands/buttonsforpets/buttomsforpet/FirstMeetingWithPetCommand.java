@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.buttonsforpets;
+package pro.sky.teamoneproject.commands.buttonsforpets.buttomsforpet;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -11,19 +11,18 @@ import pro.sky.teamoneproject.commands.Command;
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class HomeImprovementTipsYoungPetCommand extends Command {
+public class FirstMeetingWithPetCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public HomeImprovementTipsYoungPetCommand() {
-        super(HOME_IMPROVEMENT_TIPS_YOUNG_PET);
+    public FirstMeetingWithPetCommand() {
+        super(FIRST_MEETING_WITH_PET);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
-        String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Рекомендации по обустройству дома для молодого питомца:\n1...\n2...\n3...");
+        SendMessage sendMessage = new SendMessage(chatId, "Советы по первому знакомству с питомцем:\n1...\n2...\n3...");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -34,7 +33,7 @@ public class HomeImprovementTipsYoungPetCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {BACK_TO_EXTRA_PET_MENU}
+                {BACK_TO_PET_MENU}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.buttonsforshelters;
+package pro.sky.teamoneproject.commands.buttominfoaboutshelter;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;

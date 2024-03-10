@@ -4,7 +4,7 @@ import com.pengrad.telegrambot.model.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.commands.Command;
-import pro.sky.teamoneproject.commands.bottomfortakespet.HowYouCanTakePet;
+import pro.sky.teamoneproject.commands.buttonsforshelters.bottomfortakespet.HowYouCanTakePet;
 
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 

@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.buttonsforshelters;
+package pro.sky.teamoneproject.commands.buttonsforpets.buttomsforpet;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -11,19 +11,18 @@ import pro.sky.teamoneproject.commands.Command;
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class AddressOfShelterCommand extends Command {
+public class HomeImprovementTipsYoungPetCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public AddressOfShelterCommand() {
-        super(ADDRESS_OF_SHELTER);
+    public HomeImprovementTipsYoungPetCommand() {
+        super(HOME_IMPROVEMENT_TIPS_YOUNG_PET);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
-        String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы " + messageText.toLowerCase() + ", доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "Рекомендации по обустройству дома для молодого питомца:\n1...\n2...\n3...");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -34,7 +33,7 @@ public class AddressOfShelterCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {BACK_TO_SHELTER_MENU}
+                {BACK_TO_EXTRA_PET_MENU}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

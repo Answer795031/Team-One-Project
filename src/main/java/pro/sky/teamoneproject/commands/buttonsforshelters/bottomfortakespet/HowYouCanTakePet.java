@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.bottomfortakespet;
+package pro.sky.teamoneproject.commands.buttonsforshelters.bottomfortakespet;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
