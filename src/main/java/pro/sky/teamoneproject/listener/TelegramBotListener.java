@@ -33,8 +33,12 @@ import pro.sky.teamoneproject.service.ShelterServiceImpl;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import static pro.sky.teamoneproject.constant.ConstantsForShelter.BACK_TO_SELECT_SHELTER;
+import static pro.sky.teamoneproject.constant.ConstantsForShelter.GET_SHELTER_CLIENT_NUMBER;
+import static pro.sky.teamoneproject.constant.ShelterClientMode.DEFAULT;
+import static pro.sky.teamoneproject.constant.ShelterClientMode.GET_PHONE_NUMBER;
 
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -83,6 +87,7 @@ public class TelegramBotListener implements UpdatesListener {
         long chatId = update.message().chat().id();
         String receiveMessage = update.message().text();
 
+
         if (!isRegisteredUser(chatId)) {
             commands.get("/start").action(update);
             return;
@@ -94,17 +99,31 @@ public class TelegramBotListener implements UpdatesListener {
             return;
         }
 
+
         if (commands.containsKey(receiveMessage)) {
             commands.get(receiveMessage).action(update);
+            return;
         }
-        else {
-            // TODO: Вынести в отдельные классы
-            switch (receiveMessage) {
-                case "Прислать отчет о питомце":
-                    telegramBot.execute(new SendMessage(chatId, update.message().text()));
-                    break;
+
+        ShelterClient shelterClient = shelterClientRepository.findByChatId(chatId).get();
+        if (shelterClient.getSelectedMode() == GET_PHONE_NUMBER){
+            if (isValidPhoneNumber(receiveMessage)){
+                shelterClient.setPhoneNumber(receiveMessage);
+                SendMessage sendMessage = new SendMessage(chatId, "Ваш номер: "+receiveMessage);
+                telegramBot.execute(sendMessage);
+                shelterClient.setSelectedMode(DEFAULT);
+                shelterClientRepository.save(shelterClient);
+            }else {
+                commands.get(GET_SHELTER_CLIENT_NUMBER).action(update);
             }
         }
+    }
+
+    private boolean isValidPhoneNumber(String receiveMessage) {
+        Pattern pattern = Pattern.compile("([+][0-9\\.\\:\\s]{11})");
+        Matcher matcher = pattern.matcher(receiveMessage);
+
+        return matcher.matches();
     }
 
     /**
@@ -266,8 +285,7 @@ public class TelegramBotListener implements UpdatesListener {
                 continue;
             }
 
-            if (bean instanceof Command) { // Регистрируем команды
-                Command command = (Command)bean;
+            if (bean instanceof Command command) { // Регистрируем команды
                 if (command.getCommand() == null) {
                     logger.error(String.format("Команда бина \"%s\"(%s) равна null!", bean.getClass().getName(), beanName));
                     continue;
@@ -277,8 +295,7 @@ public class TelegramBotListener implements UpdatesListener {
                     registrationCommand(command);
                     logger.info(String.format("Бин \"%s\"(%s) зарегистрирован как команда \"%s\"", bean.getClass().getName(), beanName, command.getCommand()));
                 }
-            } else if (bean instanceof InlineKeyboardButtonBuilder) { // Регистрируем кнопки
-                InlineKeyboardButtonBuilder inlineKeyboardButtonBuilder = (InlineKeyboardButtonBuilder)bean;
+            } else if (bean instanceof InlineKeyboardButtonBuilder inlineKeyboardButtonBuilder) { // Регистрируем кнопки
 
                 if (!inlineButtons.containsKey(inlineKeyboardButtonBuilder.getCallbackData())) {
                     registrationInlineButton(inlineKeyboardButtonBuilder);

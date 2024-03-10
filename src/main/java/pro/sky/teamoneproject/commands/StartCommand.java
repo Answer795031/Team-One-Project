@@ -13,6 +13,8 @@ import pro.sky.teamoneproject.repository.ShelterRepository;
 
 import java.util.List;
 
+import static pro.sky.teamoneproject.constant.ShelterClientMode.DEFAULT;
+
 @Component
 public class StartCommand extends Command {
     @Autowired
@@ -35,6 +37,7 @@ public class StartCommand extends Command {
             ShelterClient shelterClient = new ShelterClient();
             shelterClient.setUsername(username);
             shelterClient.setChatId(chatId);
+            shelterClient.setSelectedMode(DEFAULT);
             shelterClientRepository.save(shelterClient);
         }
 

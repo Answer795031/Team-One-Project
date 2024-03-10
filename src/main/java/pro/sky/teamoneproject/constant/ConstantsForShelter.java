@@ -9,6 +9,7 @@ public class ConstantsForShelter {
     public static final String HOW_YOU_CAN_TAKE_PET = "Узнать как взять питомца";
     public static final String SEND_REPORT_ABOUT_OF_PET = "Прислать отчет о питомце";
     public static final String CALL_VOLUNTEER = "Позвать волонтера";
+    public static final String GET_SHELTER_CLIENT_NUMBER = "Сохранить номер телефона клиента";
 
     /**
      * Кнопки для раздела "Узнать информацию о приюте"

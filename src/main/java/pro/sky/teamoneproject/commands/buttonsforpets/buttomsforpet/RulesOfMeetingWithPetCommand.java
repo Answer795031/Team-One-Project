@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.buttonsforpets;
+package pro.sky.teamoneproject.commands.buttonsforpets.buttomsforpet;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -11,19 +11,18 @@ import pro.sky.teamoneproject.commands.Command;
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class ListOfDocumentsCommand extends Command {
+public class RulesOfMeetingWithPetCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public ListOfDocumentsCommand() {
-        super(LIST_OF_DOCUMENTS);
+    public RulesOfMeetingWithPetCommand() {
+        super(RULES_OF_MEETING_WITH_PET);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
-        String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Список документов:\n1...\n2...\n3...");
+        SendMessage sendMessage = new SendMessage(chatId, "Правила знакомства с животными:\n1...\n2...\n3...");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
