@@ -11,19 +11,18 @@ import pro.sky.teamoneproject.commands.Command;
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class ListOfDocumentsCommand extends Command {
+public class InfoAboutOfPetDefaultCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public ListOfDocumentsCommand() {
-        super(LIST_OF_DOCUMENTS);
+    public InfoAboutOfPetDefaultCommand() {
+        super(null);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
-        String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Список документов:\n1...\n2...\n3...");
+        SendMessage sendMessage = new SendMessage(chatId, "Пожалуйста, ознакомьтесь со всеми пунктами!");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -34,7 +33,15 @@ public class ListOfDocumentsCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {BACK_TO_PET_MENU}
+                {RULES_OF_MEETING_WITH_PET},
+                {LIST_OF_DOCUMENTS},
+                {TRANSPORTATION_RECOMMENDATIONS},
+                {HOME_IMPROVEMENT_TIPS},
+                {FIRST_MEETING_WITH_PET},
+                {DOG_HANDLERS_RECOMMENDATIONS},
+                {RULES_OF_SERVICE},
+                {CALL_VOLUNTEER},
+                {BACK_TO_SELECT_PETS}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

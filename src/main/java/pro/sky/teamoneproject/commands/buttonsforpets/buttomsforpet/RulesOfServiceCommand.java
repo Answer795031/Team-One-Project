@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.buttonsforshelters;
+package pro.sky.teamoneproject.commands.buttonsforpets.buttomsforpet;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -11,19 +11,18 @@ import pro.sky.teamoneproject.commands.Command;
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class LocationMapCommand extends Command {
+public class RulesOfServiceCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public LocationMapCommand() {
-        super(LOCATION_MAP);
+    public RulesOfServiceCommand() {
+        super(RULES_OF_SERVICE);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
-        String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы" + messageText.toLowerCase() + ", доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "Вам могут отказать в сервисе по следующим пунктам:\n1...\n2...\n3...");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -34,7 +33,7 @@ public class LocationMapCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {BACK_TO_SHELTER_MENU}
+                {BACK_TO_PET_MENU}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);

@@ -1,8 +1,7 @@
-package pro.sky.teamoneproject.commands.buttonsforshelters;
+package pro.sky.teamoneproject.commands.buttominfoaboutshelter;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,20 +22,7 @@ public class ShelterWorksScheduleCommand extends Command {
     public void action(Update update) {
         long chatId = update.message().chat().id();
         SendMessage sendMessage = new SendMessage(chatId, "Какая то инфа c с расписанием");
-        sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
-    }
-
-    /**
-     * Метод для создания кнопок под вводом сообщение
-     * @return таблица кнопок [строка][ячейка строки]
-     */
-    private ReplyKeyboardMarkup getReplyKeyboard() {
-        String[][] keyboard = new String[][] {
-                {BACK_TO_SHELTER_MENU}
-        };
-
-        return new ReplyKeyboardMarkup(keyboard, true, false, false);
     }
 
     @Override

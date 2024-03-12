@@ -1,4 +1,4 @@
-package pro.sky.teamoneproject.commands.buttonsforpets;
+package pro.sky.teamoneproject.commands.buttonsforpets.buttomsforpet;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -11,19 +11,18 @@ import pro.sky.teamoneproject.commands.Command;
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
 @Component
-public class InfoAboutOfPetCommand extends Command {
+public class DogHandlersRecommendationsCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    public InfoAboutOfPetCommand() {
-        super(HOW_YOU_CAN_TAKE_PET);
+    public DogHandlersRecommendationsCommand() {
+        super(DOG_HANDLERS_RECOMMENDATIONS);
     }
 
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
-        String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Пожалуйста, ознакомьтесь со всеми пунктами!");
+        SendMessage sendMessage = new SendMessage(chatId, "Советы профессиональных кинологов:\n1...\n2...\n3...");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
@@ -34,15 +33,7 @@ public class InfoAboutOfPetCommand extends Command {
      */
     private ReplyKeyboardMarkup getReplyKeyboard() {
         String[][] keyboard = new String[][] {
-                {RULES_OF_MEETING_WITH_PET},
-                {LIST_OF_DOCUMENTS},
-                {TRANSPORTATION_RECOMMENDATIONS},
-                {HOME_IMPROVEMENT_TIPS},
-                {FIRST_MEETING_WITH_PET},
-                {DOG_HANDLERS_RECOMMENDATIONS},
-                {RULES_OF_SERVICE},
-                {CALL_VOLUNTEER},
-                {BACK_TO_MAIN_MENU}
+                {BACK_TO_PET_MENU}
         };
 
         return new ReplyKeyboardMarkup(keyboard, true, false, false);
