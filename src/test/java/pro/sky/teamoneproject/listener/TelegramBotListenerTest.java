@@ -55,10 +55,11 @@ public class TelegramBotListenerTest {
         //ReflectionTestUtils.setField(out, "logger", loggerMock);
         //out.process(updates);
         //verify(telegramBotListenerMock, new Times(2)).processMessage(any());
-       // verify(telegramBotListenerMock, new Times(1)).processCallBackQuery(any());
+        // verify(telegramBotListenerMock, new Times(1)).processCallBackQuery(any());
         //verify(loggerMock, new Times(1)).error(any());
     }
-    /*
+}
+/*
 
     @Mock
     private Update updateWithMessage;
@@ -104,7 +105,7 @@ public class TelegramBotListenerTest {
         // Проверяем, что метод processCallbackQuery был вызван для updateWithCallbackQuery
         verify(telegramBotListenerMock, times(1)).processCallbackQuery(updateWithCallbackQuery);
     }
-*/
+
     @Test
     public void testUpdateSheltersCommand() {
         CommandUpdater commandUpdater = new CommandUpdater(applicationContext);
@@ -151,4 +152,4 @@ public class TelegramBotListenerTest {
         verify(applicationContext, times(1)).removeBeanDefinition("petCommand");
     }
 
-}
+} */
