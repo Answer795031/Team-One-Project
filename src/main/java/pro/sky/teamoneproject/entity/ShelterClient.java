@@ -29,6 +29,9 @@ public class ShelterClient {
     private ShelterClientMode selectedMode;
     private SendReportSteps sendReportSteps;
 
+    @OneToOne
+    private PetAdaptation sendCurrenReport;
+
     public ShelterClient() {}
 
     public ShelterClient(Long id, String username, Long chatId) {
@@ -116,10 +119,20 @@ public class ShelterClient {
         this.sendReportSteps = sendReportSteps;
     }
 
+    public PetAdaptation getSendCurrenReport() {
+        return sendCurrenReport;
+    }
+
+    public void setSendCurrenReport(PetAdaptation sendCurrenReport) {
+        this.sendCurrenReport = sendCurrenReport;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ShelterClient that)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ShelterClient that = (ShelterClient) o;
 
         if (petViewPageNumber != that.petViewPageNumber) return false;
         if (!Objects.equals(id, that.id)) return false;
@@ -132,7 +145,8 @@ public class ShelterClient {
         if (!Objects.equals(pets, that.pets)) return false;
         if (!Objects.equals(phoneNumber, that.phoneNumber)) return false;
         if (selectedMode != that.selectedMode) return false;
-        return sendReportSteps == that.sendReportSteps;
+        if (sendReportSteps != that.sendReportSteps) return false;
+        return Objects.equals(sendCurrenReport, that.sendCurrenReport);
     }
 
     @Override
@@ -147,6 +161,7 @@ public class ShelterClient {
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + (selectedMode != null ? selectedMode.hashCode() : 0);
         result = 31 * result + (sendReportSteps != null ? sendReportSteps.hashCode() : 0);
+        result = 31 * result + (sendCurrenReport != null ? sendCurrenReport.hashCode() : 0);
         return result;
     }
 }

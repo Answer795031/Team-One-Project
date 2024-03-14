@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class PetAdoption {
+public class PetAdaptation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,19 +14,10 @@ public class PetAdoption {
     private String ration;
     private String healthAndParticular;
     private String changeParticular;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ShelterClient shelterClient;
 
-    public PetAdoption() {
+    public PetAdaptation() {
     }
 
-    public PetAdoption(String pathToFilePhoto, String ration, String healthAndParticular, String changeParticular, ShelterClient shelterClient) {
-        this.pathToFilePhoto = pathToFilePhoto;
-        this.ration = ration;
-        this.healthAndParticular = healthAndParticular;
-        this.changeParticular = changeParticular;
-        this.shelterClient = shelterClient;
-    }
 
     public Long getId() {
         return id;
@@ -68,20 +59,15 @@ public class PetAdoption {
         this.changeParticular = changeParticular;
     }
 
-    public ShelterClient getShelterClient() {
-        return shelterClient;
-    }
 
-    public void setShelterClient(ShelterClient shelterClient) {
-        this.shelterClient = shelterClient;
-    }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PetAdoption that = (PetAdoption) o;
+        PetAdaptation that = (PetAdaptation) o;
 
         if (!Objects.equals(id, that.id)) return false;
         if (!Objects.equals(pathToFilePhoto, that.pathToFilePhoto))
@@ -89,9 +75,7 @@ public class PetAdoption {
         if (!Objects.equals(ration, that.ration)) return false;
         if (!Objects.equals(healthAndParticular, that.healthAndParticular))
             return false;
-        if (!Objects.equals(changeParticular, that.changeParticular))
-            return false;
-        return Objects.equals(shelterClient, that.shelterClient);
+        return Objects.equals(changeParticular, that.changeParticular);
     }
 
     @Override
@@ -101,7 +85,6 @@ public class PetAdoption {
         result = 31 * result + (ration != null ? ration.hashCode() : 0);
         result = 31 * result + (healthAndParticular != null ? healthAndParticular.hashCode() : 0);
         result = 31 * result + (changeParticular != null ? changeParticular.hashCode() : 0);
-        result = 31 * result + (shelterClient != null ? shelterClient.hashCode() : 0);
         return result;
     }
 }
