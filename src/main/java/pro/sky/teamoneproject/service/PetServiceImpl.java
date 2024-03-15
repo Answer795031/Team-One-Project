@@ -19,15 +19,33 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Pet addPet(String name, String gender, int age, String species,boolean invalid,
+    public Pet addPet(String name,
+                      String gender,
+                      int age,
+                      String species,
+                      boolean invalid,
                       String rulesForGettingToKnowAnimals,
-                      String listofDocuments, String listOfRecommendationForMovePet,
-                      String informationAboutTheLivingConditionPet, String consultationDoghandlerForFirstCommunication,
-                      String contactWitsOtherDoghanlers, String reasonWhyShelterCanReject) {
-        Pet pet = new Pet(name, gender, age, species,invalid,
-                rulesForGettingToKnowAnimals, listofDocuments, listOfRecommendationForMovePet,
-                informationAboutTheLivingConditionPet, consultationDoghandlerForFirstCommunication,
-                contactWitsOtherDoghanlers, reasonWhyShelterCanReject);
+                      String listOfDocuments,
+                      String listOfRecommendationForMovePet,
+                      String informationAboutTheLivingConditionPet,
+                      String consultationDogHandlerForFirstCommunication,
+                      String contactWitsOtherDogHandlers,
+                      String reasonWhyShelterCanReject) {
+
+        Pet pet = new Pet(
+                name,
+                gender,
+                age,
+                species,
+                invalid,
+                rulesForGettingToKnowAnimals,
+                listOfDocuments,
+                listOfRecommendationForMovePet,
+                informationAboutTheLivingConditionPet,
+                consultationDogHandlerForFirstCommunication,
+                contactWitsOtherDogHandlers,
+                reasonWhyShelterCanReject);
+
         petRepository.save(pet);
         telegramBotListener.updatePetsCommand();
 
@@ -44,15 +62,37 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Pet updatePet(Long id, String name, String gender, int age, String species, boolean invalid, String rulesForGettingToKnowAnimals,
-                         String listofDocuments, String listOfRecommendationForMovePet,
-                         String informationAboutTheLivingConditionPet, String consultationDoghandlerForFirstCommunication,
-                         String contactWitsOtherDoghanlers, String reasonWhyShelterCanReject) {
+    public Pet updatePet(Long id,
+                         String name,
+                         String gender,
+                         int age,
+                         String species,
+                         boolean invalid,
+                         String rulesForGettingToKnowAnimals,
+                         String listOfDocuments,
+                         String listOfRecommendationForMovePet,
+                         String informationAboutTheLivingConditionPet,
+                         String consultationDogHandlerForFirstCommunication,
+                         String contactWitsOtherDogHandlers,
+                         String reasonWhyShelterCanReject) {
+
         if (petRepository.findById(id).isEmpty()) {
-            return petRepository.save(new Pet(name, gender, age, species,invalid, rulesForGettingToKnowAnimals, listofDocuments, listOfRecommendationForMovePet,
-                    informationAboutTheLivingConditionPet, consultationDoghandlerForFirstCommunication,
-                    contactWitsOtherDoghanlers, reasonWhyShelterCanReject));
+            return petRepository.save(
+                    new Pet(
+                            name,
+                            gender,
+                            age,
+                            species,
+                            invalid,
+                            rulesForGettingToKnowAnimals,
+                            listOfDocuments,
+                            listOfRecommendationForMovePet,
+                            informationAboutTheLivingConditionPet,
+                            consultationDogHandlerForFirstCommunication,
+                            contactWitsOtherDogHandlers,
+                            reasonWhyShelterCanReject));
         }
+
         Pet existingPet = petRepository.findById(id).get();
         existingPet.setName(name);
         existingPet.setGender(gender);

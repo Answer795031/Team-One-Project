@@ -1,6 +1,9 @@
 package pro.sky.teamoneproject.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pro.sky.teamoneproject.entity.Shelter;
@@ -10,11 +13,27 @@ import pro.sky.teamoneproject.service.ShelterService;
 @RequestMapping("/shelter")
 public class ShelterController {
     @Autowired
-    private ShelterService shelterService;
+    private final ShelterService shelterService;
+
+    public ShelterController(ShelterService shelterService) {
+        this.shelterService = shelterService;
+    }
 
     @Operation(
-            tags = "Shelter",
-            summary = "Add a new shelter"
+            tags = "Shelters",
+            summary = "Добавление записи приюта в БД",
+            parameters = {
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "name",
+                            description = "Название"
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "description",
+                            description = "Описание"
+                    )
+            }
     )
     @PostMapping("/add")
     public Shelter add(String name, String description) {
@@ -22,29 +41,61 @@ public class ShelterController {
     }
 
     @Operation(
-            tags = "Shelter",
-            summary = "Get shelter from database"
+            tags = "Shelters",
+            summary = "Получение записи приюта из БД",
+            parameters = {
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "id",
+                            description = "ID"
+                    )
+            }
     )
-    @GetMapping("/get/{id}")
-    public Shelter get(@PathVariable long id) {
+    @GetMapping("/get")
+    public Shelter get(long id) {
         return shelterService.get(id);
     }
 
     @Operation(
-            tags = "Shelter",
-            summary = "Remove shelter"
+            tags = "Shelters",
+            summary = "Изменение записи приюта в БД",
+            parameters = {
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "id",
+                            description = "ID"
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "name",
+                            description = "Название"
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "description",
+                            description = "Описание"
+                    )
+            }
     )
-    @DeleteMapping("/remove/{id}")
-    public void remove(@PathVariable long id) {
-        shelterService.remove(id);
+    @PutMapping("/update")
+    public Shelter update(long id, String name, String description) {
+        return shelterService.update(id, name, description);
     }
 
+
     @Operation(
-            tags = "Shelter",
-            summary = "Edit shelter"
+            tags = "Shelters",
+            summary = "Удаление записи приюта из БД",
+            parameters = {
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "id",
+                            description = "ID"
+                    )
+            }
     )
-    @PutMapping("/update/{id}")
-    public Shelter update(@PathVariable long id, String name, String description) {
-        return shelterService.update(id, name, description);
+    @DeleteMapping("/remove")
+    public void remove(long id) {
+        shelterService.remove(id);
     }
 }

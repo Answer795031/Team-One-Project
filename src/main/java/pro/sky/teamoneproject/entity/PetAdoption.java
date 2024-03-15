@@ -20,7 +20,12 @@ public class PetAdoption {
     public PetAdoption() {
     }
 
-    public PetAdoption(String pathToFilePhoto, String ration, String healthAndParticular, String changeParticular, ShelterClient shelterClient) {
+    public PetAdoption(String pathToFilePhoto,
+                       String ration,
+                       String healthAndParticular,
+                       String changeParticular,
+                       ShelterClient shelterClient) {
+
         this.pathToFilePhoto = pathToFilePhoto;
         this.ration = ration;
         this.healthAndParticular = healthAndParticular;

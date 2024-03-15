@@ -17,9 +17,7 @@ public class ShelterServiceImpl implements ShelterService {
     private TelegramBotListener telegramBotListener;
 
     public Shelter add(String name, String description) {
-        Shelter shelter = new Shelter();
-        shelter.setName(name);
-        shelter.setDescription(description);
+        Shelter shelter = new Shelter(name, description);
 
         repository.save(shelter);
         telegramBotListener.updateSheltersCommand();

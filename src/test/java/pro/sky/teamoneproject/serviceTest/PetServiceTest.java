@@ -40,18 +40,18 @@ public class PetServiceTest {
         String species = "dog";
         boolean invalid = false;
         String rulesForGettingToKnowAnimals = "rules1";
-        String listofDocuments = "docs1";
+        String listOfDocuments = "docs1";
         String listOfRecommendationForMovePet = "rec1";
         String informationAboutTheLivingConditionPet = "info1";
-        String consultationDoghandlerForFirstCommunication = "consult1";
-        String contactWitsOtherDoghanlers = "contact1";
+        String consultationDogHandlerForFirstCommunication = "consult1";
+        String contactWitsOtherDogHandlers = "contact1";
         String reasonWhyShelterCanReject = "reason1";
 
         // Mock-объект для save() petRepository
         when(petRepository.save(Mockito.any(Pet.class))).thenAnswer(i -> i.getArgument(0));
 
         // Вызываем метод, который хотим протестировать
-        Pet pet = petService.addPet(name, gender, age, species, invalid, rulesForGettingToKnowAnimals, listofDocuments, listOfRecommendationForMovePet, informationAboutTheLivingConditionPet, consultationDoghandlerForFirstCommunication, contactWitsOtherDoghanlers, reasonWhyShelterCanReject);
+        Pet pet = petService.addPet(name, gender, age, species, invalid, rulesForGettingToKnowAnimals, listOfDocuments, listOfRecommendationForMovePet, informationAboutTheLivingConditionPet, consultationDogHandlerForFirstCommunication, contactWitsOtherDogHandlers, reasonWhyShelterCanReject);
 
         // Проверка результатов
         assertEquals(name, pet.getName());
@@ -64,13 +64,13 @@ public class PetServiceTest {
         assertThat(pet.getGender()).isEqualTo("male");
         assertThat(pet.getAge()).isEqualTo(1);
         assertThat(pet.getSpecies()).isEqualTo("dog");
-        assertThat(pet.isInvalid()).isFalse();
+        assertThat(pet.getInvalid()).isFalse();
         assertThat(pet.getRulesForGettingToKnowAnimals()).isEqualTo("rules1");
-        assertThat(pet.getListofDocuments()).isEqualTo("docs1");
+        assertThat(pet.getListOfDocuments()).isEqualTo("docs1");
         assertThat(pet.getListOfRecommendationForMovePet()).isEqualTo("rec1");
         assertThat(pet.getInformationAboutTheLivingConditionPet()).isEqualTo("info1");
-        assertThat(pet.getConsultationDoghandlerForFirstCommunication()).isEqualTo("consult1");
-        assertThat(pet.getContactWitsOtherDoghanlers()).isEqualTo("contact1");
+        assertThat(pet.getConsultationDogHandlerForFirstCommunication()).isEqualTo("consult1");
+        assertThat(pet.getContactWitsOtherDogHandlers()).isEqualTo("contact1");
         assertThat(pet.getReasonWhyShelterCanReject()).isEqualTo("reason1");
     }
 
