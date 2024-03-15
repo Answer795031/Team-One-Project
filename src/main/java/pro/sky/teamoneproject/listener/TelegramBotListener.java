@@ -27,10 +27,12 @@ import pro.sky.teamoneproject.constant.SendReportSteps;
 import pro.sky.teamoneproject.controller.PetController;
 import pro.sky.teamoneproject.controller.ShelterController;
 import pro.sky.teamoneproject.entity.Pet;
+import pro.sky.teamoneproject.entity.PetAdaptation;
 import pro.sky.teamoneproject.entity.Shelter;
 import pro.sky.teamoneproject.entity.ShelterClient;
 import pro.sky.teamoneproject.exception.AlreadyRegisteredException;
 import pro.sky.teamoneproject.model.telegrambot.request.InlineKeyboardButtonBuilder;
+import pro.sky.teamoneproject.repository.PetAdaptationRepository;
 import pro.sky.teamoneproject.repository.PetRepository;
 import pro.sky.teamoneproject.repository.ShelterClientRepository;
 import pro.sky.teamoneproject.repository.ShelterRepository;
@@ -61,6 +63,8 @@ public class TelegramBotListener implements UpdatesListener {
     private TelegramBot telegramBot;
     @Autowired
     private ShelterClientRepository shelterClientRepository;
+    @Autowired
+    private PetAdaptationRepository petAdaptationRepository;
     @Autowired
     private ShelterRepository shelterRepository;
     @Autowired
@@ -126,7 +130,13 @@ public class TelegramBotListener implements UpdatesListener {
         long chatId = update.message().chat().id();
         Message receiveMessage = update.message();
         ShelterClient shelterClient = shelterClientRepository.findByChatId(chatId).get();
-
+        PetAdaptation petAdaptation ;
+        if (shelterClient.getSendCurrenReport() == null){
+            petAdaptation = new PetAdaptation();
+        }else {
+            petAdaptation = petAdaptationRepository.findById(shelterClient.getSendCurrenReport().getId())
+                    .orElse(new PetAdaptation());
+        }
         if (shelterClient.getSelectedMode() == SEND_PET_INFO) {
             SendReportSteps reportStep = shelterClient.getSendReportSteps();
 
@@ -137,6 +147,7 @@ public class TelegramBotListener implements UpdatesListener {
                     telegramBot.execute(sendMessage);
                 } else {
                     try {
+
                         PhotoSize[] receivedPhotos = receiveMessage.photo();
                         String fileId = receivedPhotos[receivedPhotos.length - 1].fileId();
                         File downloadedFile = downloadFile(fileId, String.format("./PetReports/%s.jpg", fileId));
@@ -145,6 +156,11 @@ public class TelegramBotListener implements UpdatesListener {
                         SendMessage sendMessage = new SendMessage(chatId, "Вышлите рацион питомца");
                         sendMessage.replyMarkup(new ReplyKeyboardMarkup(new String[][]{{BACK_TO_MAIN_MENU}}, true, false, false));
                         telegramBot.execute(sendMessage);
+
+                        //добавление новые привычки
+                        petAdaptation.setPathToFilePhoto(downloadedFile.getAbsolutePath());
+                        petAdaptationRepository.save(petAdaptation);
+                        shelterClient.setSendCurrenReport(petAdaptation);
 
                         shelterClient.setSendReportSteps(SEND_DIET);
                         shelterClientRepository.save(shelterClient);
@@ -155,31 +171,40 @@ public class TelegramBotListener implements UpdatesListener {
                     }
                 }
             } else if (reportStep == SEND_DIET) {
-                //TODO: Сохранение рациона питомца
-                telegramBot.execute(new SendMessage(chatId, "*** Добавить функционал сохранения рациона питомца ***"));
-
                 SendMessage sendMessage = new SendMessage(chatId, "Вышлите информацию об общем самочувствие и привыкание к новому месту");
                 sendMessage.replyMarkup(new ReplyKeyboardMarkup(new String[][]{{BACK_TO_MAIN_MENU}}, true, false, false));
                 telegramBot.execute(sendMessage);
 
+                //добавление сохранения рациона
+                petAdaptation.setRation(receiveMessage.text());
+                petAdaptationRepository.save(petAdaptation);
+
                 shelterClient.setSendReportSteps(SEND_HEALTH_AND_ADAPTATION);
                 shelterClientRepository.save(shelterClient);
             } else if (reportStep == SEND_HEALTH_AND_ADAPTATION) {
-                //TODO: Сохранение информации об общем самочувствии и привыкании к новому месту
-                telegramBot.execute(new SendMessage(chatId, "*** Добавить функционал сохранения информации об общем самочувствии и привыкании к новому месту ***"));
 
                 SendMessage sendMessage = new SendMessage(chatId, "Вышлите изменения в поведении: отказ от старых привычек, приобретение новых.");
                 sendMessage.replyMarkup(new ReplyKeyboardMarkup(new String[][]{{BACK_TO_MAIN_MENU}}, true, false, false));
                 telegramBot.execute(sendMessage);
 
+                //добавление здоровья и адотации
+                petAdaptation.setHealthAndParticular(receiveMessage.text());
+
+                petAdaptationRepository.save(petAdaptation);
                 shelterClient.setSendReportSteps(SEND_CHANGES_IN_BEHAVIOR);
+
                 shelterClientRepository.save(shelterClient);
             } else if (reportStep == SEND_CHANGES_IN_BEHAVIOR) {
-                // TODO: Сохранение изменения в поведении: отказ от старых привычек, приобретение новых.
-                telegramBot.execute(new SendMessage(chatId, "*** Добавить функционал сохранения изменения в поведении: отказ от старых привычек, приобретение новых. ***"));
-
                 SendMessage sendMessage = new SendMessage(chatId, "Отчет сохранен");
                 telegramBot.execute(sendMessage);
+
+                //добавление новые привычки
+                petAdaptation.setChangeParticular(receiveMessage.text());
+                petAdaptationRepository.save(petAdaptation);
+                //обнуление позиции петомца в клиенте
+
+                shelterClient.setSendCurrenReport(null);
+                shelterClientRepository.save(shelterClient);
 
                 commands.get(BACK_TO_MAIN_MENU).action(update);
             }

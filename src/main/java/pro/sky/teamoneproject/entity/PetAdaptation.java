@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class PetAdoption {
+public class PetAdaptation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class PetAdoption {
     @ManyToOne(fetch = FetchType.LAZY)
     private ShelterClient shelterClient;
 
-    public PetAdoption() {
+    public PetAdaptation() {
     }
 
     public PetAdoption(String pathToFilePhoto,
@@ -77,16 +77,14 @@ public class PetAdoption {
         return shelterClient;
     }
 
-    public void setShelterClient(ShelterClient shelterClient) {
-        this.shelterClient = shelterClient;
-    }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PetAdoption that = (PetAdoption) o;
+        PetAdaptation that = (PetAdaptation) o;
 
         if (!Objects.equals(id, that.id)) return false;
         if (!Objects.equals(pathToFilePhoto, that.pathToFilePhoto))
@@ -94,9 +92,7 @@ public class PetAdoption {
         if (!Objects.equals(ration, that.ration)) return false;
         if (!Objects.equals(healthAndParticular, that.healthAndParticular))
             return false;
-        if (!Objects.equals(changeParticular, that.changeParticular))
-            return false;
-        return Objects.equals(shelterClient, that.shelterClient);
+        return Objects.equals(changeParticular, that.changeParticular);
     }
 
     @Override
