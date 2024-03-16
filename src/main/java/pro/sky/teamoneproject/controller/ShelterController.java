@@ -17,8 +17,8 @@ public class ShelterController {
             summary = "Add a new shelter"
     )
     @PostMapping("/add")
-    public Shelter add(String name, String description) {
-        return shelterService.add(name, description);
+    public Shelter add(@RequestBody Shelter shelter) {
+        return shelterService.add(shelter.getName(), shelter.getDescription());
     }
 
     @Operation(
@@ -44,7 +44,7 @@ public class ShelterController {
             summary = "Edit shelter"
     )
     @PutMapping("/update/{id}")
-    public Shelter update(@PathVariable long id, String name, String description) {
-        return shelterService.update(id, name, description);
+    public Shelter update(@PathVariable long id, @RequestBody Shelter shelter) {
+        return shelterService.update(id, shelter.getName(), shelter.getDescription());
     }
 }
