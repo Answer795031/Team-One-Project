@@ -130,13 +130,15 @@ public class TelegramBotListener implements UpdatesListener {
         long chatId = update.message().chat().id();
         Message receiveMessage = update.message();
         ShelterClient shelterClient = shelterClientRepository.findByChatId(chatId).get();
-        PetAdaptation petAdaptation ;
-        if (shelterClient.getSendCurrenReport() == null){
+        PetAdaptation petAdaptation;
+
+        if (shelterClient.getSendCurrenReport() == null) {
             petAdaptation = new PetAdaptation();
-        }else {
+        } else {
             petAdaptation = petAdaptationRepository.findById(shelterClient.getSendCurrenReport().getId())
                     .orElse(new PetAdaptation());
         }
+
         if (shelterClient.getSelectedMode() == SEND_PET_INFO) {
             SendReportSteps reportStep = shelterClient.getSendReportSteps();
 
@@ -147,7 +149,6 @@ public class TelegramBotListener implements UpdatesListener {
                     telegramBot.execute(sendMessage);
                 } else {
                     try {
-
                         PhotoSize[] receivedPhotos = receiveMessage.photo();
                         String fileId = receivedPhotos[receivedPhotos.length - 1].fileId();
                         File downloadedFile = downloadFile(fileId, String.format("./PetReports/%s.jpg", fileId));

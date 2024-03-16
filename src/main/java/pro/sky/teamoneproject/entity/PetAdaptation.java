@@ -6,7 +6,6 @@ import java.util.Objects;
 
 @Entity
 public class PetAdaptation {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +16,6 @@ public class PetAdaptation {
 
     public PetAdaptation() {
     }
-
 
     public Long getId() {
         return id;
@@ -58,9 +56,6 @@ public class PetAdaptation {
     public void setChangeParticular(String changeParticular) {
         this.changeParticular = changeParticular;
     }
-
-
-
 
     @Override
     public boolean equals(Object o) {
