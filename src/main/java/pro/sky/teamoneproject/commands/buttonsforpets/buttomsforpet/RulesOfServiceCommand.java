@@ -7,6 +7,8 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.commands.Command;
+import pro.sky.teamoneproject.repository.PetRepository;
+import pro.sky.teamoneproject.repository.ShelterClientRepository;
 
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
@@ -14,7 +16,10 @@ import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 public class RulesOfServiceCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
-
+    @Autowired
+    private PetRepository petRepository;
+    @Autowired
+    private ShelterClientRepository shelterClientRepository;
     public RulesOfServiceCommand() {
         super(RULES_OF_SERVICE);
     }
@@ -22,7 +27,9 @@ public class RulesOfServiceCommand extends Command {
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
-        SendMessage sendMessage = new SendMessage(chatId, "Вам могут отказать в сервисе по следующим пунктам:\n1...\n2...\n3...");
+        long petId = shelterClientRepository.findByChatId(chatId).get().getPet().getId();
+        SendMessage sendMessage = new SendMessage(chatId, "Вам могут отказать в сервисе по следующим пунктам:\n"+
+                petRepository.findById(petId).get().getReasonWhyShelterCanReject());
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }

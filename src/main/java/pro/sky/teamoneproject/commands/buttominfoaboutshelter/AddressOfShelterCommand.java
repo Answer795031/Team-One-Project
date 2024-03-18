@@ -22,8 +22,7 @@ public class AddressOfShelterCommand extends Command {
     @Override
     public void action(Update update) {
         long chatId = update.message().chat().id();
-        String messageText = update.message().text();
-        SendMessage sendMessage = new SendMessage(chatId, "Для того чтобы " + messageText.toLowerCase() + ", доступны следующие команды");
+        SendMessage sendMessage = new SendMessage(chatId, "ул. Никому не известная, д. 10 А");
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
