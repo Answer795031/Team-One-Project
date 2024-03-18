@@ -14,23 +14,8 @@ public class PetAdaptation {
     private String ration;
     private String healthAndParticular;
     private String changeParticular;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ShelterClient shelterClient;
 
     public PetAdaptation() {
-    }
-
-    public PetAdoption(String pathToFilePhoto,
-                       String ration,
-                       String healthAndParticular,
-                       String changeParticular,
-                       ShelterClient shelterClient) {
-
-        this.pathToFilePhoto = pathToFilePhoto;
-        this.ration = ration;
-        this.healthAndParticular = healthAndParticular;
-        this.changeParticular = changeParticular;
-        this.shelterClient = shelterClient;
     }
 
     public Long getId() {
@@ -73,12 +58,6 @@ public class PetAdaptation {
         this.changeParticular = changeParticular;
     }
 
-    public ShelterClient getShelterClient() {
-        return shelterClient;
-    }
-
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,7 +81,6 @@ public class PetAdaptation {
         result = 31 * result + (ration != null ? ration.hashCode() : 0);
         result = 31 * result + (healthAndParticular != null ? healthAndParticular.hashCode() : 0);
         result = 31 * result + (changeParticular != null ? changeParticular.hashCode() : 0);
-        result = 31 * result + (shelterClient != null ? shelterClient.hashCode() : 0);
         return result;
     }
 }

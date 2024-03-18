@@ -21,81 +21,38 @@ public class ShelterController {
 
     @Operation(
             tags = "Shelters",
-            summary = "Добавление записи приюта в БД",
-            parameters = {
-                    @Parameter(
-                            in = ParameterIn.QUERY,
-                            name = "name",
-                            description = "Название"
-                    ),
-                    @Parameter(
-                            in = ParameterIn.QUERY,
-                            name = "description",
-                            description = "Описание"
-                    )
-            }
+            summary = "Добавление записи приюта в БД"
     )
     @PostMapping("/add")
-    public Shelter add(String name, String description) {
-        return shelterService.add(name, description);
+    public Shelter add(@RequestBody Shelter shelter) {
+        return shelterService.add(shelter.getName(), shelter.getDescription());
     }
 
     @Operation(
             tags = "Shelters",
-            summary = "Получение записи приюта из БД",
-            parameters = {
-                    @Parameter(
-                            in = ParameterIn.QUERY,
-                            name = "id",
-                            description = "ID"
-                    )
-            }
+            summary = "Получение записи приюта из БД"
     )
-    @GetMapping("/get")
-    public Shelter get(long id) {
+    @GetMapping("/get/{id}")
+    public Shelter get(@PathVariable long id) {
         return shelterService.get(id);
     }
 
     @Operation(
             tags = "Shelters",
-            summary = "Изменение записи приюта в БД",
-            parameters = {
-                    @Parameter(
-                            in = ParameterIn.QUERY,
-                            name = "id",
-                            description = "ID"
-                    ),
-                    @Parameter(
-                            in = ParameterIn.QUERY,
-                            name = "name",
-                            description = "Название"
-                    ),
-                    @Parameter(
-                            in = ParameterIn.QUERY,
-                            name = "description",
-                            description = "Описание"
-                    )
-            }
+            summary = "Изменение записи приюта в БД"
     )
-    @PutMapping("/update")
-    public Shelter update(long id, String name, String description) {
-        return shelterService.update(id, name, description);
+    @PutMapping("/update/{id}")
+    public Shelter update(@PathVariable long id, @RequestBody Shelter shelter) {
+        return shelterService.update(id, shelter.getName(), shelter.getDescription());
     }
 
 
     @Operation(
             tags = "Shelters",
-            summary = "Удаление записи приюта из БД",
-            parameters = {
-                    @Parameter(
-                            in = ParameterIn.QUERY,
-                            name = "id",
-                            description = "ID"
-                    )
-            }
+            summary = "Удаление записи приюта из БД"
     )
-    @DeleteMapping("/remove")
-    public void remove(long id) {
+    @DeleteMapping("/remove/{id}")
+    public void remove(@PathVariable long id) {
         shelterService.remove(id);
     }
 }
