@@ -160,5 +160,23 @@ public class Pet {
         return Objects.hash(id, name, gender, age, species, invalid, rulesForGettingToKnowAnimals, listofDocuments, listOfRecommendationForMovePet, informationAboutTheLivingConditionPet, consultationDoghandlerForFirstCommunication, contactWitsOtherDoghanlers, reasonWhyShelterCanReject);
     }
 
-
+    @Override
+    public String toString() {
+        return "Pet{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", age=" + age +
+                ", species='" + species + '\'' +
+                ", invalid=" + invalid +
+                ", rulesForGettingToKnowAnimals='" + rulesForGettingToKnowAnimals + '\'' +
+                ", listofDocuments='" + listofDocuments + '\'' +
+                ", listOfRecommendationForMovePet='" + listOfRecommendationForMovePet + '\'' +
+                ", informationAboutTheLivingConditionPet='" + informationAboutTheLivingConditionPet + '\'' +
+                ", consultationDoghandlerForFirstCommunication='" + consultationDoghandlerForFirstCommunication + '\'' +
+                ", contactWitsOtherDoghanlers='" + contactWitsOtherDoghanlers + '\'' +
+                ", reasonWhyShelterCanReject='" + reasonWhyShelterCanReject + '\'' +
+                ", shelterClient=" + shelterClient +
+                '}';
+    }
 }
