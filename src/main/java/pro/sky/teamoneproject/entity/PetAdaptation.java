@@ -2,6 +2,7 @@ package pro.sky.teamoneproject.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -13,6 +14,7 @@ public class PetAdaptation {
     private String ration;
     private String healthAndParticular;
     private String changeParticular;
+    private LocalDateTime reportDateTime;
 
     public PetAdaptation() {
     }
@@ -55,6 +57,14 @@ public class PetAdaptation {
 
     public void setChangeParticular(String changeParticular) {
         this.changeParticular = changeParticular;
+    }
+
+    public LocalDateTime getReportDateTime() {
+        return reportDateTime;
+    }
+
+    public void setReportDateTime(LocalDateTime reportDateTime) {
+        this.reportDateTime = reportDateTime;
     }
 
     @Override
