@@ -70,23 +70,22 @@ public class PetControllerTest {
         when(petRepository.save(any(Pet.class))).thenReturn(pet);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/pet/add")
-                        .content(actualPet.toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                .post("/pet/add")
+                .content(actualPet.toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-
                 .andExpect(jsonPath("$.name").value(pet.getName()))
                 .andExpect(jsonPath("$.gender").value(pet.getGender()))
                 .andExpect(jsonPath("$.age").value(pet.getAge()))
                 .andExpect(jsonPath("$.species").value(pet.getSpecies()))
                 .andExpect(jsonPath("$.invalid").value(pet.isInvalid()))
                 .andExpect(jsonPath("$.rulesForGettingToKnowAnimals").value(pet.getRulesForGettingToKnowAnimals()))
-                .andExpect(jsonPath("$.listofDocuments").value(pet.getListofDocuments()))
+                .andExpect(jsonPath("$.listOfDocuments").value(pet.getListOfDocuments()))
                 .andExpect(jsonPath("$.listOfRecommendationForMovePet").value(pet.getListOfRecommendationForMovePet()))
                 .andExpect(jsonPath("$.informationAboutTheLivingConditionPet").value(pet.getInformationAboutTheLivingConditionPet()))
-                .andExpect(jsonPath("$.consultationDoghandlerForFirstCommunication").value(pet.getConsultationDoghandlerForFirstCommunication()))
-                .andExpect(jsonPath("$.contactWitsOtherDoghanlers").value(pet.getContactWitsOtherDoghanlers()))
+                .andExpect(jsonPath("$.consultationDogHandlerForFirstCommunication").value(pet.getConsultationDogHandlerForFirstCommunication()))
+                .andExpect(jsonPath("$.contactWitsOtherDogHandlers").value(pet.getContactWitsOtherDogHandlers()))
                 .andExpect(jsonPath("$.reasonWhyShelterCanReject").value(pet.getReasonWhyShelterCanReject()));
     }
 
@@ -98,23 +97,22 @@ public class PetControllerTest {
         when(petRepository.findById(any(Long.class))).thenReturn(Optional.of(pet));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/pet/get/" + 123)
-                        .content(actualPet.toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                .get("/pet/get/" + 123)
+                .content(actualPet.toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-
                 .andExpect(jsonPath("$.name").value(pet.getName()))
                 .andExpect(jsonPath("$.gender").value(pet.getGender()))
                 .andExpect(jsonPath("$.age").value(pet.getAge()))
                 .andExpect(jsonPath("$.species").value(pet.getSpecies()))
                 .andExpect(jsonPath("$.invalid").value(pet.isInvalid()))
                 .andExpect(jsonPath("$.rulesForGettingToKnowAnimals").value(pet.getRulesForGettingToKnowAnimals()))
-                .andExpect(jsonPath("$.listofDocuments").value(pet.getListofDocuments()))
+                .andExpect(jsonPath("$.listOfDocuments").value(pet.getListOfDocuments()))
                 .andExpect(jsonPath("$.listOfRecommendationForMovePet").value(pet.getListOfRecommendationForMovePet()))
                 .andExpect(jsonPath("$.informationAboutTheLivingConditionPet").value(pet.getInformationAboutTheLivingConditionPet()))
-                .andExpect(jsonPath("$.consultationDoghandlerForFirstCommunication").value(pet.getConsultationDoghandlerForFirstCommunication()))
-                .andExpect(jsonPath("$.contactWitsOtherDoghanlers").value(pet.getContactWitsOtherDoghanlers()))
+                .andExpect(jsonPath("$.consultationDogHandlerForFirstCommunication").value(pet.getConsultationDogHandlerForFirstCommunication()))
+                .andExpect(jsonPath("$.contactWitsOtherDogHandlers").value(pet.getContactWitsOtherDogHandlers()))
                 .andExpect(jsonPath("$.reasonWhyShelterCanReject").value(pet.getReasonWhyShelterCanReject()));
     }
 
@@ -127,23 +125,22 @@ public class PetControllerTest {
         when(petRepository.save(any(Pet.class))).thenReturn(pet);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/pet/update/" + 123)
-                        .content(actualPet.toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                .put("/pet/update/" + 123)
+                .content(actualPet.toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-
                 .andExpect(jsonPath("$.name").value(pet.getName()))
                 .andExpect(jsonPath("$.gender").value(pet.getGender()))
                 .andExpect(jsonPath("$.age").value(pet.getAge()))
                 .andExpect(jsonPath("$.species").value(pet.getSpecies()))
                 .andExpect(jsonPath("$.invalid").value(pet.isInvalid()))
                 .andExpect(jsonPath("$.rulesForGettingToKnowAnimals").value(pet.getRulesForGettingToKnowAnimals()))
-                .andExpect(jsonPath("$.listofDocuments").value(pet.getListofDocuments()))
+                .andExpect(jsonPath("$.listOfDocuments").value(pet.getListOfDocuments()))
                 .andExpect(jsonPath("$.listOfRecommendationForMovePet").value(pet.getListOfRecommendationForMovePet()))
                 .andExpect(jsonPath("$.informationAboutTheLivingConditionPet").value(pet.getInformationAboutTheLivingConditionPet()))
-                .andExpect(jsonPath("$.consultationDoghandlerForFirstCommunication").value(pet.getConsultationDoghandlerForFirstCommunication()))
-                .andExpect(jsonPath("$.contactWitsOtherDoghanlers").value(pet.getContactWitsOtherDoghanlers()))
+                .andExpect(jsonPath("$.consultationDogHandlerForFirstCommunication").value(pet.getConsultationDogHandlerForFirstCommunication()))
+                .andExpect(jsonPath("$.contactWitsOtherDogHandlers").value(pet.getContactWitsOtherDogHandlers()))
                 .andExpect(jsonPath("$.reasonWhyShelterCanReject").value(pet.getReasonWhyShelterCanReject()));
     }
 
@@ -155,8 +152,8 @@ public class PetControllerTest {
         when(petRepository.save(any(Pet.class))).thenReturn(pet);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/pet/remove/" + 123)
-                        .accept(MediaType.APPLICATION_JSON))
+                .delete("/pet/remove/" + 123)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 }

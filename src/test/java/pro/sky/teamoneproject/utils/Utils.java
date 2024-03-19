@@ -14,11 +14,11 @@ public class Utils {
         actualPet.put("species", "Cat");
         actualPet.put("invalid", false);
         actualPet.put("rulesForGettingToKnowAnimals", "None 1");
-        actualPet.put("listofDocuments", "Passport");
+        actualPet.put("listOfDocuments", "Passport");
         actualPet.put("listOfRecommendationForMovePet", "None 2");
         actualPet.put("informationAboutTheLivingConditionPet", "None 3");
-        actualPet.put("consultationDoghandlerForFirstCommunication", "None 4");
-        actualPet.put("contactWitsOtherDoghanlers", "None 5");
+        actualPet.put("consultationDogHandlerForFirstCommunication", "None 4");
+        actualPet.put("contactWitsOtherDogHandlers", "None 5");
         actualPet.put("reasonWhyShelterCanReject", "None 6");
 
         return actualPet;
@@ -33,11 +33,11 @@ public class Utils {
         pet.setSpecies("Cat");
         pet.setInvalid(false);
         pet.setRulesForGettingToKnowAnimals("None 1");
-        pet.setListofDocuments("Passport");
+        pet.setListOfDocuments("Passport");
         pet.setListOfRecommendationForMovePet("None 2");
         pet.setInformationAboutTheLivingConditionPet("None 3");
-        pet.setConsultationDoghandlerForFirstCommunication("None 4");
-        pet.setContactWitsOtherDoghanlers("None 5");
+        pet.setConsultationDogHandlerForFirstCommunication("None 4");
+        pet.setContactWitsOtherDogHandlers("None 5");
         pet.setReasonWhyShelterCanReject("None 6");
 
         return pet;
