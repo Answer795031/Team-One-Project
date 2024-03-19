@@ -6,7 +6,6 @@ import java.util.Objects;
 
 @Entity
 public class Pet {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,8 +21,6 @@ public class Pet {
     private String consultationDoghandlerForFirstCommunication;
     private String contactWitsOtherDoghanlers;
     private String reasonWhyShelterCanReject;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ShelterClient shelterClient;
 
     public Pet() {
     }
@@ -176,7 +173,6 @@ public class Pet {
                 ", consultationDoghandlerForFirstCommunication='" + consultationDoghandlerForFirstCommunication + '\'' +
                 ", contactWitsOtherDoghanlers='" + contactWitsOtherDoghanlers + '\'' +
                 ", reasonWhyShelterCanReject='" + reasonWhyShelterCanReject + '\'' +
-                ", shelterClient=" + shelterClient +
                 '}';
     }
 }

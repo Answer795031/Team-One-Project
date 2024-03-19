@@ -15,6 +15,8 @@ public class PetAdaptation {
     private String healthAndParticular;
     private String changeParticular;
     private LocalDateTime reportDateTime;
+    @ManyToOne
+    private ShelterClient shelterClient;
 
     public PetAdaptation() {
     }
@@ -63,8 +65,16 @@ public class PetAdaptation {
         return reportDateTime;
     }
 
-    public void setReportDateTime(LocalDateTime reportDateTime) {
-        this.reportDateTime = reportDateTime;
+    public void resetReportDateTime() {
+        this.reportDateTime = LocalDateTime.now();
+    }
+
+    public ShelterClient getShelterClient() {
+        return shelterClient;
+    }
+
+    public void setShelterClient(ShelterClient shelterClient) {
+        this.shelterClient = shelterClient;
     }
 
     @Override
