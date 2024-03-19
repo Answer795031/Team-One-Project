@@ -6,7 +6,6 @@ import java.util.Objects;
 
 @Entity
 public class Pet {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,8 +21,6 @@ public class Pet {
     private String consultationDoghandlerForFirstCommunication;
     private String contactWitsOtherDoghanlers;
     private String reasonWhyShelterCanReject;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ShelterClient shelterClient;
 
     public Pet() {
     }
@@ -160,5 +157,22 @@ public class Pet {
         return Objects.hash(id, name, gender, age, species, invalid, rulesForGettingToKnowAnimals, listofDocuments, listOfRecommendationForMovePet, informationAboutTheLivingConditionPet, consultationDoghandlerForFirstCommunication, contactWitsOtherDoghanlers, reasonWhyShelterCanReject);
     }
 
-
+    @Override
+    public String toString() {
+        return "Pet{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", age=" + age +
+                ", species='" + species + '\'' +
+                ", invalid=" + invalid +
+                ", rulesForGettingToKnowAnimals='" + rulesForGettingToKnowAnimals + '\'' +
+                ", listofDocuments='" + listofDocuments + '\'' +
+                ", listOfRecommendationForMovePet='" + listOfRecommendationForMovePet + '\'' +
+                ", informationAboutTheLivingConditionPet='" + informationAboutTheLivingConditionPet + '\'' +
+                ", consultationDoghandlerForFirstCommunication='" + consultationDoghandlerForFirstCommunication + '\'' +
+                ", contactWitsOtherDoghanlers='" + contactWitsOtherDoghanlers + '\'' +
+                ", reasonWhyShelterCanReject='" + reasonWhyShelterCanReject + '\'' +
+                '}';
+    }
 }
