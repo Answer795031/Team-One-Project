@@ -18,11 +18,6 @@ public class PetAdaptationServiceImpl implements PetAdaptationService{
 //    @Autowired
 //    private TelegramBotListener telegramBotListener;
 
-        @Override
-    public PetAdaptation addPetAdaptation(String pathToFilePhoto, String ration, String healthAndParticular, String changeParticular, LocalDateTime reportDateTime, ShelterClient shelterClient) {
-        return null;
-    }
-
     @Override
     public PetAdaptation updatePetAdaptation(Long id, boolean checkReport) {
         if (petAdaptationRepository.findById(id).isEmpty()) {
@@ -35,20 +30,20 @@ public class PetAdaptationServiceImpl implements PetAdaptationService{
         return existingPetAdaptation;
     }
     @Override
-    public List<PetAdaptation> getAdaptationPet(Long id) {
+    public PetAdaptation getPetAdaptation(Long id) {
         if (petAdaptationRepository.findById(id).isEmpty()) {
-            throw new PetNotFoundException("отчеты не найдены");
+            throw new PetNotFoundException("Отчеты не найдены");
         }
 
-        return petAdaptationRepository.getAll();
+        return petAdaptationRepository.findById(id).get();
     }
     @Override
     public PetAdaptation removePetAdaptation(Long id) {
-        return null;
-    }
+        if (petAdaptationRepository.findById(id).isEmpty()) {
+            return null;
+        }
+        petAdaptationRepository.deleteById(id);
 
-    @Override
-    public PetAdaptation getPetAdaptation(Long id) {
-        return null;
+        return petAdaptationRepository.findById(id).get();
     }
 }

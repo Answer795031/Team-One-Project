@@ -21,13 +21,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class PetServiceTest {
-
     @Autowired
     private PetServiceImpl petService;
-
     @MockBean
     private PetRepository petRepository;
-
     @MockBean
     private TelegramBotListener telegramBotListener;
 
@@ -64,7 +61,7 @@ public class PetServiceTest {
         assertThat(pet.getGender()).isEqualTo("male");
         assertThat(pet.getAge()).isEqualTo(1);
         assertThat(pet.getSpecies()).isEqualTo("dog");
-        assertThat(pet.getInvalid()).isFalse();
+        assertThat(pet.isInvalid()).isFalse();
         assertThat(pet.getRulesForGettingToKnowAnimals()).isEqualTo("rules1");
         assertThat(pet.getListOfDocuments()).isEqualTo("docs1");
         assertThat(pet.getListOfRecommendationForMovePet()).isEqualTo("rec1");
@@ -73,7 +70,6 @@ public class PetServiceTest {
         assertThat(pet.getContactWitsOtherDogHandlers()).isEqualTo("contact1");
         assertThat(pet.getReasonWhyShelterCanReject()).isEqualTo("reason1");
     }
-
 
     @Test
     public void testGetPet_Success() {
@@ -104,7 +100,6 @@ public class PetServiceTest {
         // Проверяем, что будет выброшено исключение PetNotFoundException
         assertThrows(PetNotFoundException.class, () -> petService.getPet(id));
     }
-
 
 
     // тесты для сценариев, когда питомец существует и не существует в репозитории
