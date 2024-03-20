@@ -24,6 +24,7 @@ import pro.sky.teamoneproject.commands.Command;
 import pro.sky.teamoneproject.commands.ShelterDefaultCommand;
 import pro.sky.teamoneproject.commands.buttonsforpets.InfoAboutOfPetDefaultCommand;
 import pro.sky.teamoneproject.constant.SendReportSteps;
+import pro.sky.teamoneproject.controller.PetAdaptationController;
 import pro.sky.teamoneproject.controller.PetController;
 import pro.sky.teamoneproject.controller.ShelterController;
 import pro.sky.teamoneproject.entity.*;
@@ -415,7 +416,9 @@ public class TelegramBotListener implements UpdatesListener {
                     || beanName.equalsIgnoreCase(ShelterServiceImpl.class.getSimpleName())
                     || beanName.equalsIgnoreCase(ShelterController.class.getSimpleName())
                     || beanName.equalsIgnoreCase(PetServiceImpl.class.getSimpleName())
-                    || beanName.equalsIgnoreCase(PetController.class.getSimpleName())) {
+                    || beanName.equalsIgnoreCase(PetController.class.getSimpleName())
+                    || beanName.equalsIgnoreCase(PetAdaptationController.class.getSimpleName())
+                    || beanName.equalsIgnoreCase(PetAdaptationController.class.getSimpleName())) {
                 continue;
             }
 

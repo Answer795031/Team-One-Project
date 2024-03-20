@@ -30,7 +30,7 @@ public class FirstMeetingWithPetCommand extends Command {
         long chatId = update.message().chat().id();
         long petId = shelterClientRepository.findByChatId(chatId).get().getPet().getId();
         SendMessage sendMessage = new SendMessage(chatId, "Советы по первому знакомству с питомцем:\n" +
-                petRepository.findById(petId).get().getConsultationDoghandlerForFirstCommunication());
+                petRepository.findById(petId).get().getConsultationDogHandlerForFirstCommunication());
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }

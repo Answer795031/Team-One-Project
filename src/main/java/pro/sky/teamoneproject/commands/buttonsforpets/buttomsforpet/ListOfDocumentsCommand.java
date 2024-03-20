@@ -29,7 +29,7 @@ public class ListOfDocumentsCommand extends Command {
         long chatId = update.message().chat().id();
         long petId = shelterClientRepository.findByChatId(chatId).get().getPet().getId();
         SendMessage sendMessage = new SendMessage(chatId, "Список документов: \n"+
-                petRepository.findById(petId).get().getListofDocuments());
+                petRepository.findById(petId).get().getListOfDocuments());
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }

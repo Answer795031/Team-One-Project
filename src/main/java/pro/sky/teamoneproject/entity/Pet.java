@@ -179,11 +179,11 @@ public class Pet {
                 ", species='" + species + '\'' +
                 ", invalid=" + invalid +
                 ", rulesForGettingToKnowAnimals='" + rulesForGettingToKnowAnimals + '\'' +
-                ", listofDocuments='" + listofDocuments + '\'' +
+                ", listOfDocuments='" + listOfDocuments + '\'' +
                 ", listOfRecommendationForMovePet='" + listOfRecommendationForMovePet + '\'' +
                 ", informationAboutTheLivingConditionPet='" + informationAboutTheLivingConditionPet + '\'' +
-                ", consultationDoghandlerForFirstCommunication='" + consultationDoghandlerForFirstCommunication + '\'' +
-                ", contactWitsOtherDoghanlers='" + contactWitsOtherDoghanlers + '\'' +
+                ", consultationDogHandlerForFirstCommunication='" + consultationDogHandlerForFirstCommunication + '\'' +
+                ", contactWitsOtherDogHandlers='" + contactWitsOtherDogHandlers + '\'' +
                 ", reasonWhyShelterCanReject='" + reasonWhyShelterCanReject + '\'' +
                 '}';
     }

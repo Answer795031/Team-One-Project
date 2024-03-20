@@ -29,7 +29,7 @@ public class DogHandlersRecommendationsCommand extends Command {
         long chatId = update.message().chat().id();
         long petId = shelterClientRepository.findByChatId(chatId).get().getPet().getId();
         SendMessage sendMessage = new SendMessage(chatId, "Советы профессиональных кинологов:\n"+
-                petRepository.findById(petId).get().getContactWitsOtherDoghanlers());
+                petRepository.findById(petId).get().getContactWitsOtherDogHandlers());
         sendMessage.replyMarkup(getReplyKeyboard());
         telegramBot.execute(sendMessage);
     }
