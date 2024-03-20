@@ -7,6 +7,9 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.teamoneproject.commands.Command;
+import pro.sky.teamoneproject.entity.ShelterClient;
+import pro.sky.teamoneproject.repository.PetRepository;
+import pro.sky.teamoneproject.repository.ShelterClientRepository;
 
 import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 
@@ -14,6 +17,10 @@ import static pro.sky.teamoneproject.constant.ConstantsForShelter.*;
 public class InfoAboutOfPetDefaultCommand extends Command {
     @Autowired
     private TelegramBot telegramBot;
+    @Autowired
+    private ShelterClientRepository shelterClientRepository;
+    @Autowired
+    private PetRepository petRepository;
 
     public InfoAboutOfPetDefaultCommand() {
         super(null);
@@ -24,6 +31,12 @@ public class InfoAboutOfPetDefaultCommand extends Command {
         long chatId = update.message().chat().id();
         SendMessage sendMessage = new SendMessage(chatId, "Пожалуйста, ознакомьтесь со всеми пунктами!");
         sendMessage.replyMarkup(getReplyKeyboard());
+
+        ShelterClient shelterClient = shelterClientRepository.findByChatId(chatId).get();
+        shelterClient.setPet(petRepository.findByName(update.message().text()));
+
+        shelterClientRepository.save(shelterClient);
+
         telegramBot.execute(sendMessage);
     }
 

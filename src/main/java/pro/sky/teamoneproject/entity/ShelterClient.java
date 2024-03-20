@@ -5,7 +5,6 @@ import pro.sky.teamoneproject.constant.SendReportSteps;
 import pro.sky.teamoneproject.constant.ShelterClientMode;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 import static pro.sky.teamoneproject.constant.ShelterClientMode.DEFAULT;
@@ -22,8 +21,8 @@ public class ShelterClient {
     @ManyToOne
     private Shelter selectedShelter;
     private LocalDateTime lastTimeAppeal;
-    @OneToMany(fetch = FetchType.LAZY)
-    public List<Pet> pets;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Pet pet;
     private int petViewPageNumber;
     private String phoneNumber;
     private ShelterClientMode selectedMode;
@@ -71,6 +70,14 @@ public class ShelterClient {
 
     public void setSelectedShelter(Shelter selectedShelter) {
         this.selectedShelter = selectedShelter;
+    }
+
+    public Pet getPet() {
+        return pet;
+    }
+
+    public void setPet(Pet pet) {
+        this.pet = pet;
     }
 
     public LocalDateTime getLastTimeAppeal() {
@@ -142,7 +149,7 @@ public class ShelterClient {
             return false;
         if (!Objects.equals(lastTimeAppeal, that.lastTimeAppeal))
             return false;
-        if (!Objects.equals(pets, that.pets)) return false;
+        if (!Objects.equals(pet, that.pet)) return false;
         if (!Objects.equals(phoneNumber, that.phoneNumber)) return false;
         if (selectedMode != that.selectedMode) return false;
         if (sendReportSteps != that.sendReportSteps) return false;
@@ -156,7 +163,7 @@ public class ShelterClient {
         result = 31 * result + (chatId != null ? chatId.hashCode() : 0);
         result = 31 * result + (selectedShelter != null ? selectedShelter.hashCode() : 0);
         result = 31 * result + (lastTimeAppeal != null ? lastTimeAppeal.hashCode() : 0);
-        result = 31 * result + (pets != null ? pets.hashCode() : 0);
+        result = 31 * result + (pet != null ? pet.hashCode() : 0);
         result = 31 * result + petViewPageNumber;
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + (selectedMode != null ? selectedMode.hashCode() : 0);

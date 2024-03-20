@@ -24,18 +24,13 @@ import pro.sky.teamoneproject.commands.Command;
 import pro.sky.teamoneproject.commands.ShelterDefaultCommand;
 import pro.sky.teamoneproject.commands.buttonsforpets.InfoAboutOfPetDefaultCommand;
 import pro.sky.teamoneproject.constant.SendReportSteps;
+import pro.sky.teamoneproject.controller.PetAdaptationController;
 import pro.sky.teamoneproject.controller.PetController;
 import pro.sky.teamoneproject.controller.ShelterController;
-import pro.sky.teamoneproject.entity.Pet;
-import pro.sky.teamoneproject.entity.PetAdaptation;
-import pro.sky.teamoneproject.entity.Shelter;
-import pro.sky.teamoneproject.entity.ShelterClient;
+import pro.sky.teamoneproject.entity.*;
 import pro.sky.teamoneproject.exception.AlreadyRegisteredException;
 import pro.sky.teamoneproject.model.telegrambot.request.InlineKeyboardButtonBuilder;
-import pro.sky.teamoneproject.repository.PetAdaptationRepository;
-import pro.sky.teamoneproject.repository.PetRepository;
-import pro.sky.teamoneproject.repository.ShelterClientRepository;
-import pro.sky.teamoneproject.repository.ShelterRepository;
+import pro.sky.teamoneproject.repository.*;
 import pro.sky.teamoneproject.service.PetServiceImpl;
 import pro.sky.teamoneproject.service.ShelterServiceImpl;
 
@@ -69,6 +64,8 @@ public class TelegramBotListener implements UpdatesListener {
     private ShelterRepository shelterRepository;
     @Autowired
     private PetRepository petRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
     @Autowired
     private GenericApplicationContext applicationContext;
 
@@ -201,11 +198,21 @@ public class TelegramBotListener implements UpdatesListener {
 
                 //добавление новые привычки
                 petAdaptation.setChangeParticular(receiveMessage.text());
+                petAdaptation.setShelterClient(shelterClient);
+                petAdaptation.resetReportDateTime();
                 petAdaptationRepository.save(petAdaptation);
                 //обнуление позиции петомца в клиенте
 
                 shelterClient.setSendCurrenReport(null);
                 shelterClientRepository.save(shelterClient);
+
+                Notification notification = notificationRepository.findByShelterClientId(shelterClient.getId()).orElseGet(() -> {
+                    Notification notification1 = new Notification();
+                    notification1.setShelterClient(shelterClient);
+                    return notification1;
+                });
+                notification.resetLastNotificationDateTime();
+                notificationRepository.save(notification);
 
                 commands.get(BACK_TO_MAIN_MENU).action(update);
             }
@@ -409,7 +416,9 @@ public class TelegramBotListener implements UpdatesListener {
                     || beanName.equalsIgnoreCase(ShelterServiceImpl.class.getSimpleName())
                     || beanName.equalsIgnoreCase(ShelterController.class.getSimpleName())
                     || beanName.equalsIgnoreCase(PetServiceImpl.class.getSimpleName())
-                    || beanName.equalsIgnoreCase(PetController.class.getSimpleName())) {
+                    || beanName.equalsIgnoreCase(PetController.class.getSimpleName())
+                    || beanName.equalsIgnoreCase(PetAdaptationController.class.getSimpleName())
+                    || beanName.equalsIgnoreCase(PetAdaptationController.class.getSimpleName())) {
                 continue;
             }
 
