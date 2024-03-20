@@ -15,6 +15,13 @@ public class Shelter {
     private String name;
     private String description;
 
+    public Shelter() {}
+
+    public Shelter(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
     }

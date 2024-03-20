@@ -60,12 +60,11 @@ class ShelterControllerTest {
         when(shelterRepository.save(any(Shelter.class))).thenReturn(shelter);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/shelter/add")
-                        .content(actualShelter.toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                .post("/shelter/add")
+                .content(actualShelter.toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-
                 .andExpect(jsonPath("$.name").value(shelter.getName()))
                 .andExpect(jsonPath("$.description").value(shelter.getDescription()));
     }
@@ -78,12 +77,11 @@ class ShelterControllerTest {
         when(shelterRepository.findById(any(Long.class))).thenReturn(Optional.of(shelter));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/shelter/get/" + 123)
-                        .content(actualShelter.toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                .get("/shelter/get/" + 123)
+                .content(actualShelter.toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-
                 .andExpect(jsonPath("$.name").value(shelter.getName()))
                 .andExpect(jsonPath("$.description").value(shelter.getDescription()));
     }
@@ -96,8 +94,8 @@ class ShelterControllerTest {
         when(shelterRepository.save(any(Shelter.class))).thenReturn(shelter);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/shelter/remove/" + 123)
-                        .accept(MediaType.APPLICATION_JSON))
+                .delete("/shelter/remove/" + 123)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -110,12 +108,11 @@ class ShelterControllerTest {
         when(shelterRepository.save(any(Shelter.class))).thenReturn(shelter);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/shelter/update/" + 123)
-                        .content(actualShelter.toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                .put("/shelter/update/" + 123)
+                .content(actualShelter.toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-
                 .andExpect(jsonPath("$.name").value(shelter.getName()))
                 .andExpect(jsonPath("$.description").value(shelter.getDescription()));
     }

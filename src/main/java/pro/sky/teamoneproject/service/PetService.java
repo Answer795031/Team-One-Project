@@ -4,18 +4,33 @@ import pro.sky.teamoneproject.entity.Pet;
 
 public interface PetService {
     
-    Pet addPet(String name, String gender, int age, String species,boolean invalid,
+    Pet addPet(String name,
+               String gender,
+               int age,
+               String species,
+               boolean invalid,
                String rulesForGettingToKnowAnimals,
-               String listofDocuments, String listOfRecommendationForMovePet,
-               String informationAboutTheLivingConditionPet, String consultationDoghandlerForFirstCommunication,
-               String contactWitsOtherDoghanlers, String reasonWhyShelterCanReject);
+               String listOfDocuments,
+               String listOfRecommendationForMovePet,
+               String informationAboutTheLivingConditionPet,
+               String consultationDogHandlerForFirstCommunication,
+               String contactWitsOtherDogHandlers,
+               String reasonWhyShelterCanReject);
 
 
-    Pet updatePet(Long id, String name, String gender, int age, String species,boolean invalid,
+    Pet updatePet(Long id,
+                  String name,
+                  String gender,
+                  int age,
+                  String species,
+                  boolean invalid,
                   String rulesForGettingToKnowAnimals,
-                  String listofDocuments, String listOfRecommendationForMovePet,
-                  String informationAboutTheLivingConditionPet, String consultationDoghandlerForFirstCommunication,
-                  String contactWitsOtherDoghanlers, String reasonWhyShelterCanReject);
+                  String listOfDocuments,
+                  String listOfRecommendationForMovePet,
+                  String informationAboutTheLivingConditionPet,
+                  String consultationDogHandlerForFirstCommunication,
+                  String contactWitsOtherDogHandlers,
+                  String reasonWhyShelterCanReject);
 
     Pet removePet(Long id);
 
