@@ -6,6 +6,7 @@ import java.util.Objects;
 
 @Entity
 public class Pet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +18,7 @@ public class Pet {
     private String rulesForGettingToKnowAnimals;
     private String listOfDocuments;
     private String listOfRecommendationForMovePet;
-    private String informationAboutTheLivingConditionPet;//щенок взрослый инвалид
+    private String informationAboutTheLivingConditionPet; //щенок взрослый инвалид
     private String consultationDogHandlerForFirstCommunication;
     private String contactWitsOtherDogHandlers;
     private String reasonWhyShelterCanReject;

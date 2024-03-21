@@ -10,11 +10,12 @@ import pro.sky.teamoneproject.repository.PetRepository;
 @Service
 public class PetServiceImpl implements PetService {
     @Autowired
-    private TelegramBotListener telegramBotListener;
+    private final TelegramBotListener telegramBotListener;
 
     private final PetRepository petRepository;
 
-    public PetServiceImpl(PetRepository petRepository) {
+    public PetServiceImpl(TelegramBotListener telegramBotListener, PetRepository petRepository) {
+        this.telegramBotListener = telegramBotListener;
         this.petRepository = petRepository;
     }
 
