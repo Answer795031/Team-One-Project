@@ -3,6 +3,9 @@ package pro.sky.teamoneproject.utils;
 import org.json.JSONObject;
 import pro.sky.teamoneproject.entity.Pet;
 import pro.sky.teamoneproject.entity.Shelter;
+import pro.sky.teamoneproject.entity.ShelterClient;
+
+import static pro.sky.teamoneproject.constant.ShelterClientMode.DEFAULT;
 
 public class Utils {
     public static JSONObject getActualPet() throws Exception {
@@ -59,5 +62,13 @@ public class Utils {
         shelter.setDescription("Shelter Test desc");
 
         return shelter;
+    }
+    public static ShelterClient getShelterClient() {
+        ShelterClient shelterClient = new ShelterClient();
+        shelterClient.setUsername("Tretyakov99");
+        shelterClient.setChatId(987987987L);
+        shelterClient.setSelectedMode(DEFAULT);
+
+        return shelterClient;
     }
 }

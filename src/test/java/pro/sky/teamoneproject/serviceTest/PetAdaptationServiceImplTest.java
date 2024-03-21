@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import pro.sky.teamoneproject.TeamOneProjectApplication;
 import pro.sky.teamoneproject.entity.PetAdaptation;
 import pro.sky.teamoneproject.entity.ShelterClient;
 import pro.sky.teamoneproject.repository.PetAdaptationRepository;
 import pro.sky.teamoneproject.repository.ShelterClientRepository;
 import pro.sky.teamoneproject.service.PetAdaptationService;
+import pro.sky.teamoneproject.utils.Utils;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -29,11 +31,6 @@ class PetAdaptationServiceImplTest {
     @MockBean
     private ShelterClientRepository shelterClientRepository;
 
-    PetAdaptationServiceImplTest(PetAdaptationService petAdaptationService, PetAdaptationRepository petAdaptationRepository, ShelterClientRepository shelterClientRepository) {
-        this.petAdaptationService = petAdaptationService;
-        this.petAdaptationRepository = petAdaptationRepository;
-        this.shelterClientRepository = shelterClientRepository;
-    }
 
 //    @Test
 //    public void testAddPet() {
@@ -54,38 +51,33 @@ class PetAdaptationServiceImplTest {
     @Test
     public void testGetPetAdaptation() {
         // Создаем данные для теста
-        Long id = 10L;
-        ShelterClient shelterClient = shelterClientRepository.findByChatId(390313270L).get();
-//        Long clientId = shelterClient.getId();
+        Long id = 1L;
+        ShelterClient shelterClient = Utils.getShelterClient();
         LocalDateTime reportDateTime = LocalDateTime.now();
 
-        PetAdaptation mockPetAdaptation = new PetAdaptation(
-                "pathToFilePhoto",
-                "ration",
-                "healthAndParticular",
-                "changeParticular",
-                reportDateTime,
-                shelterClient,
-                false);
+        PetAdaptation mockPetAdaptation = new PetAdaptation();
+//                "pathToFilePhoto",
+//                "ration",
+//                "healthAndParticular",
+//                "changeParticular",
+//                reportDateTime,
+//                shelterClient,
+//                false
+//        );
+        mockPetAdaptation.setPathToFilePhoto("pathToFilePhoto");
+        mockPetAdaptation.setRation("ration");
+        mockPetAdaptation.setHealthAndParticular("healthAndParticular");
+        mockPetAdaptation.setChangeParticular("changeParticular");
+        mockPetAdaptation.setCheckReport(false);
+        mockPetAdaptation.setShelterClient(shelterClient);
 
-        mockPetAdaptation.setId(id);
-
-//        mockPetAdaptation.setId(id);
-//        mockPetAdaptation.setPathToFilePhoto("pathToFilePhoto");
-//        mockPetAdaptation.setRation("ration");
-//        mockPetAdaptation.setHealthAndParticular("healthAndParticular");
-//        mockPetAdaptation.setChangeParticular("changeParticular");
-//        mockPetAdaptation.setCheckReport(false);
-//        mockPetAdaptation.setShelterClient(new ShelterClient(3L, "MTarasov13", 390313270L));
-
-        // Mock-объект для save() petAdaptationRepository
-//        when(petAdaptationRepository.findById(anyLong())).thenReturn(Optional.of(mockPetAdaptation));
-
-//        PetAdaptation petAdaptation = petAdaptationService.getPetAdaptation(id);
+//         Mock-объект для save() petAdaptationRepository
+        when(petAdaptationRepository.findById(id)).thenReturn(Optional.of(mockPetAdaptation));
+        PetAdaptation petAdaptation = petAdaptationService.getPetAdaptation(id);
 //
 //        // Проверяем, что результат соответствует ожидаемым значениям.
-//        assertNotNull(petAdaptation);
-//        assertEquals(mockPetAdaptation, petAdaptation);
+        assertNotNull(petAdaptation);
+        assertEquals(mockPetAdaptation, petAdaptation);
     }
 
 
