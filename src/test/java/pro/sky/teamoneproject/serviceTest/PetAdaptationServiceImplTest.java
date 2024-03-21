@@ -2,6 +2,7 @@ package pro.sky.teamoneproject.serviceTest;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,6 +18,7 @@ import pro.sky.teamoneproject.utils.Utils;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -32,22 +34,6 @@ class PetAdaptationServiceImplTest {
     private ShelterClientRepository shelterClientRepository;
 
 
-//    @Test
-//    public void testAddPet() {
-//        PetAdaptation petAdaptation = new PetAdaptation();
-//        Long id = 5L;
-//
-//        petAdaptation.setId(id);
-//        petAdaptation.setPathToFilePhoto("pathToFilePhoto");
-//        petAdaptation.setRation("ration");
-//        petAdaptation.setHealthAndParticular("healthAndParticular");
-//        petAdaptation.setChangeParticular("changeParticular");
-//        petAdaptation.setCheckReport(false);
-//        petAdaptation.setShelterClient(new ShelterClient(3L, "MTarasov13", 390313270L));
-//
-//
-//    }
-
     @Test
     public void testGetPetAdaptation() {
         // Создаем данные для теста
@@ -56,14 +42,6 @@ class PetAdaptationServiceImplTest {
         LocalDateTime reportDateTime = LocalDateTime.now();
 
         PetAdaptation mockPetAdaptation = new PetAdaptation();
-//                "pathToFilePhoto",
-//                "ration",
-//                "healthAndParticular",
-//                "changeParticular",
-//                reportDateTime,
-//                shelterClient,
-//                false
-//        );
         mockPetAdaptation.setPathToFilePhoto("pathToFilePhoto");
         mockPetAdaptation.setRation("ration");
         mockPetAdaptation.setHealthAndParticular("healthAndParticular");
@@ -80,5 +58,49 @@ class PetAdaptationServiceImplTest {
         assertEquals(mockPetAdaptation, petAdaptation);
     }
 
+    @Test
+    public void testUpdatePetAdaptation() {
+        // Исходная запись
+        Long id = 1L;
+        ShelterClient shelterClient = Utils.getShelterClient();
+        LocalDateTime reportDateTime = LocalDateTime.now();
 
+        PetAdaptation existingReport = new PetAdaptation();
+        existingReport.setPathToFilePhoto("pathToFilePhoto");
+        existingReport.setRation("ration");
+        existingReport.setHealthAndParticular("healthAndParticular");
+        existingReport.setChangeParticular("changeParticular");
+        existingReport.setCheckReport(false);
+        existingReport.setShelterClient(shelterClient);
+
+        when(petAdaptationRepository.findById(1L)).thenReturn(Optional.of(existingReport));
+        when(petAdaptationRepository.save(Mockito.any(PetAdaptation.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Обновленная запись
+        boolean updateCheckReport = true;
+        PetAdaptation updateReport = petAdaptationService.updatePetAdaptation(id, updateCheckReport);
+
+        assertThat(updateReport).isNotNull();
+        assertThat(updateReport.isCheckReport()).isEqualTo(true);
+    }
+
+    @Test
+    public void testRemovePetAdaptation() {
+        // Исходная запись
+        Long id = 1L;
+        ShelterClient shelterClient = Utils.getShelterClient();
+        LocalDateTime reportDateTime = LocalDateTime.now();
+
+        PetAdaptation existingReport = new PetAdaptation();
+        existingReport.setPathToFilePhoto("pathToFilePhoto");
+        existingReport.setRation("ration");
+        existingReport.setHealthAndParticular("healthAndParticular");
+        existingReport.setChangeParticular("changeParticular");
+        existingReport.setCheckReport(false);
+        existingReport.setShelterClient(shelterClient);
+
+        PetAdaptation removeReport = petAdaptationService.removePetAdaptation(id);
+
+        assertThat(removeReport).isNull();
+    }
 }
