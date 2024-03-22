@@ -41,7 +41,7 @@ public class StartCommand extends Command {
             shelterClientRepository.save(shelterClient);
         }
 
-        SendMessage sendMessage = new SendMessage(chatId, "*** Приветственное сообщение ***"); //TODO: Придумать приветственное сообщение
+        SendMessage sendMessage = new SendMessage(chatId, "Здравствуйте, меня зовут Максим, я из компании Орифлейм! Не хотите ли ознакомиться с нашими предложениями?");
         sendMessage.replyMarkup(getShelterButtons());
         telegramBot.execute(sendMessage);
     }
