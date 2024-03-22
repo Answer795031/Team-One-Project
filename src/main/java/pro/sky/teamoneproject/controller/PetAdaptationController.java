@@ -32,7 +32,7 @@ public class PetAdaptationController {
             summary = "Изменение статуса отчета в БД"
     )
     @PutMapping(value = "/update/{id}")
-    public PetAdaptation updatePetAdaptation(@PathVariable Long id, @RequestParam("Report status") boolean check) {
+    public PetAdaptation updatePetAdaptation(@PathVariable Long id, @RequestParam("status") boolean check) {
         return petAdaptationService.updatePetAdaptation(id, check);
     }
 

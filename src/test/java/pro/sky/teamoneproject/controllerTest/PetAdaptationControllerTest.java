@@ -99,22 +99,24 @@ class PetAdaptationControllerTest {
         JSONObject actualPetAdaptation = getActualPetAdaptation();
         PetAdaptation petAdaptation = getPetAdaptation();
 
+        boolean status = true;
+
         when(petAdaptationRepository.findById(any(Long.class))).thenReturn(Optional.of(petAdaptation));
         when(petAdaptationRepository.save(any(PetAdaptation.class))).thenReturn(petAdaptation);
 
         mockMvc.perform(MockMvcRequestBuilders
-                .put("/reports/update/" + 123)
+                .put("/reports/update/123?status=" + status)
                 .content(actualPetAdaptation.toString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.pathToFilePhoto").value(petAdaptation.getPathToFilePhoto()))
-//                .andExpect(jsonPath("$.ration").value(petAdaptation.getRation()))
-//                .andExpect(jsonPath("$.healthAndParticular").value(petAdaptation.getHealthAndParticular()))
-//                .andExpect(jsonPath("$.changeParticular").value(petAdaptation.getChangeParticular()))
-//                .andExpect(jsonPath("$.reportDateTime").value(petAdaptation.getReportDateTime()))
-//                .andExpect(jsonPath("$.shelterClient").value(petAdaptation.getShelterClient()))
-                .andExpect(jsonPath("$.checkReport").value(false));
+                .andExpect(jsonPath("$.pathToFilePhoto").value(petAdaptation.getPathToFilePhoto()))
+                .andExpect(jsonPath("$.ration").value(petAdaptation.getRation()))
+                .andExpect(jsonPath("$.healthAndParticular").value(petAdaptation.getHealthAndParticular()))
+                .andExpect(jsonPath("$.changeParticular").value(petAdaptation.getChangeParticular()))
+                .andExpect(jsonPath("$.reportDateTime").value(petAdaptation.getReportDateTime()))
+                .andExpect(jsonPath("$.shelterClient").value(petAdaptation.getShelterClient()))
+                .andExpect(jsonPath("$.checkReport").value(status));
     }
 
     @Test

@@ -58,7 +58,7 @@ public class Utils {
         actualPetAdaptation.put("changeParticular", "changeParticular");
         actualPetAdaptation.put("reportDateTime", LocalDateTime.now());
         actualPetAdaptation.put("shelterClient", getShelterClient());
-        actualPetAdaptation.put("checkReport", false);
+        actualPetAdaptation.put("checkReport", true);
 
         return actualPetAdaptation;
     }
