@@ -6,6 +6,7 @@ import java.util.Objects;
 
 @Entity
 public class Pet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +18,7 @@ public class Pet {
     private String rulesForGettingToKnowAnimals;
     private String listOfDocuments;
     private String listOfRecommendationForMovePet;
-    private String informationAboutTheLivingConditionPet;//щенок взрослый инвалид
+    private String informationAboutTheLivingConditionPet; //щенок взрослый инвалид
     private String consultationDogHandlerForFirstCommunication;
     private String contactWitsOtherDogHandlers;
     private String reasonWhyShelterCanReject;
@@ -179,11 +180,11 @@ public class Pet {
                 ", species='" + species + '\'' +
                 ", invalid=" + invalid +
                 ", rulesForGettingToKnowAnimals='" + rulesForGettingToKnowAnimals + '\'' +
-                ", listofDocuments='" + listofDocuments + '\'' +
+                ", listOfDocuments='" + listOfDocuments + '\'' +
                 ", listOfRecommendationForMovePet='" + listOfRecommendationForMovePet + '\'' +
                 ", informationAboutTheLivingConditionPet='" + informationAboutTheLivingConditionPet + '\'' +
-                ", consultationDoghandlerForFirstCommunication='" + consultationDoghandlerForFirstCommunication + '\'' +
-                ", contactWitsOtherDoghanlers='" + contactWitsOtherDoghanlers + '\'' +
+                ", consultationDogHandlerForFirstCommunication='" + consultationDogHandlerForFirstCommunication + '\'' +
+                ", contactWitsOtherDogHandlers='" + contactWitsOtherDogHandlers + '\'' +
                 ", reasonWhyShelterCanReject='" + reasonWhyShelterCanReject + '\'' +
                 '}';
     }

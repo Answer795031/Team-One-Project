@@ -3,6 +3,7 @@ package pro.sky.teamoneproject.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.web.bind.annotation.*;
 import pro.sky.teamoneproject.entity.Pet;
 import pro.sky.teamoneproject.service.PetService;

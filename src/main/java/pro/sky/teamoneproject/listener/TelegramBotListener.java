@@ -24,6 +24,7 @@ import pro.sky.teamoneproject.commands.Command;
 import pro.sky.teamoneproject.commands.ShelterDefaultCommand;
 import pro.sky.teamoneproject.commands.buttonsforpets.InfoAboutOfPetDefaultCommand;
 import pro.sky.teamoneproject.constant.SendReportSteps;
+import pro.sky.teamoneproject.controller.PetAdaptationController;
 import pro.sky.teamoneproject.controller.PetController;
 import pro.sky.teamoneproject.controller.ShelterController;
 import pro.sky.teamoneproject.entity.*;
@@ -103,6 +104,7 @@ public class TelegramBotListener implements UpdatesListener {
         }
 
         if (receiveMessage != null) {
+
             if (!(commands.get(receiveMessage) instanceof ShelterDefaultCommand)
                     && !isValidUser(chatId)) {
                 commands.get("/start").action(update);
@@ -114,12 +116,44 @@ public class TelegramBotListener implements UpdatesListener {
                 return;
             }
 
+            if (processReceiveShelterClientMessageFromModeration(update)){
+                return;
+            }
             if (processReceiveShelterClientNumber(update)) {
                 return;
             }
         }
 
         processReceivePetReport(update);
+    }
+
+    private boolean processReceiveShelterClientMessageFromModeration(Update update) {
+        long chatId = update.message().chat().id();
+        String receiveMessage = update.message().text();
+        if (isReciveMessageFromModeration(receiveMessage)){
+
+            Pattern pattern = Pattern.compile("(pm:)([0-9]{9})( [а-яА-Яa-zA-Z\\s]+)");
+            Matcher matcher = pattern.matcher(receiveMessage);
+
+            Long chatIdClient = null;
+            String messageModer = null;
+
+            if (matcher.matches()) {
+                 chatIdClient = Long.parseLong(matcher.group(2));
+                 messageModer = matcher.group(3);
+            }
+
+            SendMessage sendMessage = new SendMessage(chatIdClient,messageModer);
+            telegramBot.execute(sendMessage);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isReciveMessageFromModeration(String receiveMessage) {
+        Pattern pattern = Pattern.compile("(pm:)([0-9]{9})( [а-яА-Яa-zA-Z\\s]+)");
+        Matcher matcher = pattern.matcher(receiveMessage);
+        return matcher.matches();
     }
 
     private boolean processReceivePetReport(Update update) {
