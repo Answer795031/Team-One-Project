@@ -2,8 +2,11 @@ package pro.sky.teamoneproject.utils;
 
 import org.json.JSONObject;
 import pro.sky.teamoneproject.entity.Pet;
+import pro.sky.teamoneproject.entity.PetAdaptation;
 import pro.sky.teamoneproject.entity.Shelter;
 import pro.sky.teamoneproject.entity.ShelterClient;
+
+import java.time.LocalDateTime;
 
 import static pro.sky.teamoneproject.constant.ShelterClientMode.DEFAULT;
 
@@ -44,6 +47,34 @@ public class Utils {
         pet.setReasonWhyShelterCanReject("None 6");
 
         return pet;
+    }
+
+    public static JSONObject getActualPetAdaptation() throws Exception {
+        JSONObject actualPetAdaptation = new JSONObject();
+
+        actualPetAdaptation.put("pathToFilePhoto", "pathToFilePhoto");
+        actualPetAdaptation.put("ration", "ration");
+        actualPetAdaptation.put("healthAndParticular", "healthAndParticular");
+        actualPetAdaptation.put("changeParticular", "changeParticular");
+        actualPetAdaptation.put("reportDateTime", LocalDateTime.now());
+        actualPetAdaptation.put("shelterClient", getShelterClient());
+        actualPetAdaptation.put("checkReport", false);
+
+        return actualPetAdaptation;
+    }
+
+    public static PetAdaptation getPetAdaptation() {
+        PetAdaptation petAdaptation = new PetAdaptation();
+
+        petAdaptation.setPathToFilePhoto("pathToFilePhoto");
+        petAdaptation.setRation("ration");
+        petAdaptation.setHealthAndParticular("healthAndParticular");
+        petAdaptation.setChangeParticular("changeParticular");
+        petAdaptation.getReportDateTime();
+        petAdaptation.setShelterClient(getShelterClient());
+        petAdaptation.setCheckReport(false);
+
+        return petAdaptation;
     }
 
     public static JSONObject getActualShelter() throws Exception {
