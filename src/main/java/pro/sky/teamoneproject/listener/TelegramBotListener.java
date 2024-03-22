@@ -126,7 +126,10 @@ public class TelegramBotListener implements UpdatesListener {
 
         processReceivePetReport(update);
     }
-
+    /**
+     * Обработчик полученных callback от кнопок сообщений
+     * @param update полученное обновление от бота (сообщения, callback)
+     */
     private boolean processReceiveShelterClientMessageFromModeration(Update update) {
         long chatId = update.message().chat().id();
         String receiveMessage = update.message().text();
@@ -149,13 +152,19 @@ public class TelegramBotListener implements UpdatesListener {
         }
         return false;
     }
-
+    /**
+     * Валидация на сообщение модератора клиенту
+     * @param receiveMessage
+     */
     private boolean isReciveMessageFromModeration(String receiveMessage) {
         Pattern pattern = Pattern.compile("(pm:)([0-9]{9})( [а-яА-Яa-zA-Z\\s]+)");
         Matcher matcher = pattern.matcher(receiveMessage);
         return matcher.matches();
     }
-
+    /**
+     * Обработчик полученных callback от кнопок сообщений
+     * @param update полученное обновление от бота (сообщения, callback)
+     */
     private boolean processReceivePetReport(Update update) {
         long chatId = update.message().chat().id();
         Message receiveMessage = update.message();
@@ -255,7 +264,11 @@ public class TelegramBotListener implements UpdatesListener {
 
         return false;
     }
-
+    /**
+     * Загрузка файла из бота от клиента в определенную папку
+     * @param fileId
+     * @param outputFilePath
+     */
     public File downloadFile(String fileId, String outputFilePath) throws IOException {
         File outputFile = new File(outputFilePath);
         if (!outputFile.getParentFile().exists()) {
@@ -272,7 +285,10 @@ public class TelegramBotListener implements UpdatesListener {
 
         return outputFile;
     }
-
+    /**
+     * Обработчик полученных callback от кнопок сообщений
+     * @param update полученное обновление от бота (сообщения, callback)
+     */
     private boolean processReceiveShelterClientNumber(Update update) {
         long chatId = update.message().chat().id();
         String receiveMessage = update.message().text();
@@ -294,6 +310,10 @@ public class TelegramBotListener implements UpdatesListener {
 
         return false;
     }
+    /**
+     * Валидация номера для получения его от клиента
+     * @param receiveMessage
+     */
 
     private boolean isValidPhoneNumber(String receiveMessage) {
         Pattern pattern = Pattern.compile("([+][0-9]{11})");
